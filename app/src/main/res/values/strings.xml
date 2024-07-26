@@ -6,7 +6,7 @@
     <string name="text_button_media_library">Медиатека</string>
     <string name="text_button_settings">Настройки</string>
     <string name="black_theme">Темная тема</string>
-    <string name="share">Поделиться приложением</string>
+    <string name="share_app">Поделиться приложением</string>
     <string name="call">Написать в поддержку</string>
     <string name="terms_of_use">Пользовательское соглашение</string>
 </resources>
