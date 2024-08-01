@@ -18,11 +18,11 @@ class SettingsActivity : AppCompatActivity() {
 
         val buttonIconRound = findViewById<Button>(R.id.icon_round)
         buttonIconRound.setOnClickListener{
-            val iconRoundIntent = Intent(Intent.ACTION_SEND).apply{
+            val ShareAppIntent = Intent(Intent.ACTION_SEND).apply{
                 type = "text/plain"
                 putExtra(Intent.EXTRA_TEXT, getString(R.string.message_icon_round))
             }
-            startActivity(iconRoundIntent)
+            startActivity(ShareAppIntent)
         }
 
         val buttonIconCall = findViewById<Button>(R.id.icon_call)

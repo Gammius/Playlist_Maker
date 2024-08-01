@@ -10,6 +10,8 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import androidx.core.widget.addTextChangedListener
 
 class SearchActivity : AppCompatActivity() {
     private var searchText: String = ""
@@ -38,17 +40,12 @@ class SearchActivity : AppCompatActivity() {
             searchClearButton.visibility = View.GONE
         }
 
-        val simpleTextWatcher = object : TextWatcher{
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-                searchClearButton.visibility = clearButtonVisibility(p0)
-                searchText = p0.toString()
-            }
-            override fun afterTextChanged(p0: Editable?) {
-            }
-        }
-        searchEditText.addTextChangedListener(simpleTextWatcher)
+
+        searchEditText.addTextChangedListener(
+            onTextChanged = { charSequence,_,_,_ ->
+                searchClearButton.isVisible = !charSequence.isNullOrEmpty()
+                searchText = charSequence.toString()
+        })
 
     }
 
@@ -67,13 +64,6 @@ class SearchActivity : AppCompatActivity() {
         private const val KEY_SEARCH_TEXT = "searchText"
     }
 
-    fun clearButtonVisibility(p0: CharSequence?): Int{
-        return if(p0.isNullOrEmpty()) {
-            View.GONE
-        } else {
-            View.VISIBLE
-        }
-    }
 
     fun closeKeyboard(context: Context, searchEditText: EditText){
         val closeKeyboard = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

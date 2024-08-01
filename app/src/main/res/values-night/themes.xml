@@ -13,6 +13,6 @@
 
     <style name="Search.Theme.PlayList_Maker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:background">@color/black1</item>
-        <item name="android:backgroundTint">@color/black1</item>
+
     </style>
 </resources>

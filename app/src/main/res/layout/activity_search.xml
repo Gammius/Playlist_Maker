@@ -55,7 +55,8 @@
             android:layout_height="12dp"
             android:src="@drawable/delete"
             android:layout_margin="8dp"
-            android:visibility="gone">
+            android:visibility="gone"
+            style="@style/delete">
         </ImageView>
 
     </LinearLayout>
