@@ -1,12 +1,21 @@
 <resources>
     <string name="app_name" translatable="false">Playlist Maker</string>
     <string name="title_hello">Привет, Практикум</string>
-    <string name="header">Playlist maker</string>
-    <string name="text_button_search">Поиск</string>
-    <string name="text_button_media_library">Медиатека</string>
-    <string name="text_button_settings">Настройки</string>
-    <string name="black_theme">Темная тема</string>
-    <string name="share_app">Поделиться приложением</string>
-    <string name="call">Написать в поддержку</string>
-    <string name="terms_of_use">Пользовательское соглашение</string>
+    <string name="header_main">Playlist maker</string>
+    <string name="button_search_main">Поиск</string>
+    <string name="button_media_library_main">Медиатека</string>
+    <string name="button_settings_main">Настройки</string>
+    <string name="black_theme_settings">Темная тема</string>
+    <string name="share_app_settings">Поделиться приложением</string>
+    <string name="call_settings">Написать в поддержку</string>
+    <string name="terms_of_use_settings">Пользовательское соглашение</string>
+    <string name="header_setting">Настройки</string>
+    
+    <string name="message_icon_round">https://practicum.yandex.ru/android-developer/</string>
+    <string name="message_icon_call">Спасибо разработчикам и разработчицам за крутое приложение!</string>
+    <string name="subject_icon_call">Сообщение разработчикам и разработчицам приложения Playlist Maker</string>
+    <string name="mail_user_icon_call">mish777an@yandex.ru</string>
+    <string name="url_icon_arrow">https://yandex.ru/legal/practicum_offer/</string>
+    <string name="header_search">Поиск</string>
+    <string name="search_hint">Поиск</string>
 </resources>

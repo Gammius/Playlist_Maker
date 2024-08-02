@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:theme="@style/Base.Theme.PlaylistMakerSetting">
+   >
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -17,19 +17,14 @@
             android:id="@+id/arrow_back"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:padding="12dp"
-            app:icon="@drawable/arrow1"
-            app:iconTint="@color/icon_color"/>
+            style="@style/Back_Arrow_Style"
+            app:icon="@drawable/arrow1"/>
         <TextView
             android:id="@+id/text_settings_header"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_1"
-            android:fontFamily="@font/ys_display_bold_medium"
-            android:text="@string/text_button_settings"
-            android:paddingLeft="@dimen/padding_text_header_setting"
-            android:paddingBottom="@dimen/padding_text_header_setting"
-            android:paddingTop="@dimen/padding_text_header_setting" />
+            style="@style/Header_Text_Style"
+            android:text="@string/header_setting"/>
     </LinearLayout>
 
     <LinearLayout
@@ -40,18 +35,15 @@
             android:id="@+id/theme"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/ysdisplay"
-            android:paddingLeft="@dimen/padding_left_text_setting"
-            android:paddingTop="@dimen/padding_top_text_setting"
-            android:paddingBottom="@dimen/padding_bottom_text_setting"
-            android:text="@string/black_theme"
-            android:textSize="@dimen/text_size_setting" />
+            style="@style/Text_View_Settings"
+            android:text="@string/black_theme_settings"
+            tools:ignore="Suspicious0dp"/>
         <Switch
             android:id="@+id/switch1"
             android:layout_width="56dp"
             android:layout_height="48dp"
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+            tools:ignore="UseSwitchCompatOrMaterialXml"/>
     </LinearLayout>
 
     <LinearLayout
@@ -63,27 +55,16 @@
             android:id="@+id/share"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/ysdisplay"
-            android:paddingLeft="@dimen/padding_left_text_setting"
-            android:paddingTop="@dimen/padding_top_text_setting"
-            android:paddingBottom="@dimen/padding_bottom_text_setting"
-            android:text="@string/share_app"
-            android:textSize="@dimen/text_size_setting" />
+            style="@style/Text_View_Settings"
+            android:text="@string/share_app_settings"
+            tools:ignore="Suspicious0dp"/>
         <Button
             android:id="@+id/icon_round"
             android:layout_width="@dimen/button_size"
             android:layout_height="@dimen/button_size"
-            android:layout_marginBottom="@dimen/button_margin_bottom"
-            android:layout_marginTop="@dimen/button_margin_top"
-            android:layout_marginRight="@dimen/button_margin_right"
-            app:icon="@drawable/icon_round"
-            app:iconTint="@color/icon_color2"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp" />
-        ></LinearLayout>
+            style="@style/Button_Settings"
+            app:icon="@drawable/icon_round"/>
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -94,27 +75,16 @@
             android:id="@+id/support"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/ysdisplay"
-            android:paddingLeft="@dimen/padding_left_text_setting"
-            android:paddingTop="@dimen/padding_top_text_setting"
-            android:paddingBottom="@dimen/padding_bottom_text_setting"
-            android:text="@string/call"
-            android:textSize="@dimen/text_size_setting" />
+            style="@style/Text_View_Settings"
+            android:text="@string/call_settings"
+            tools:ignore="Suspicious0dp"/>
         <Button
             android:id="@+id/icon_call"
             android:layout_width="@dimen/button_size"
             android:layout_height="@dimen/button_size"
-            android:layout_marginBottom="@dimen/button_margin_bottom"
-            android:layout_marginTop="@dimen/button_margin_top"
-            android:layout_marginRight="@dimen/button_margin_right"
-            app:icon="@drawable/call"
-            app:iconTint="@color/icon_color2"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"/>
-        ></LinearLayout>
+            style="@style/Button_Settings"
+            app:icon="@drawable/call"/>
+        </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -125,25 +95,14 @@
             android:id="@+id/terms"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/ysdisplay"
-            android:paddingLeft="@dimen/padding_left_text_setting"
-            android:paddingTop="@dimen/padding_top_text_setting"
-            android:paddingBottom="@dimen/padding_bottom_text_setting"
-            android:text="@string/terms_of_use"
-            android:textSize="@dimen/text_size_setting" />
+            style="@style/Text_View_Settings"
+            android:text="@string/terms_of_use_settings"
+            tools:ignore="Suspicious0dp"/>
         <Button
             android:id="@+id/arrow"
             android:layout_width="@dimen/button_size"
             android:layout_height="@dimen/button_size"
-            android:layout_marginBottom="@dimen/button_margin_bottom"
-            android:layout_marginTop="@dimen/button_margin_top"
-            android:layout_marginRight="@dimen/button_margin_right"
-            app:icon="@drawable/arrow2"
-            app:iconTint="@color/icon_color2"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"/>
-        ></LinearLayout>
+            style="@style/Button_Settings"
+            app:icon="@drawable/arrow2"/>
+        </LinearLayout>
 </LinearLayout>

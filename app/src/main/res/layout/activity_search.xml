@@ -1,10 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     tools:context=".SearchActivity">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:padding="4dp">
+        <Button
+            android:id="@+id/arrow_back"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            style="@style/Back_Arrow_Style"
+            app:icon="@drawable/arrow1"
+            android:shadowRadius="0"
+            android:shadowDx="0"
+            android:shadowDy="0"
+            />
+        <TextView
+            android:id="@+id/text_settings_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/Header_Text_Style"
+            android:text="@string/header_search"/>
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="36dp"
+        android:orientation="horizontal"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:padding="4dp"
+        style="@style/Layout_search">
+        <EditText
+            android:id="@+id/search_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:layout_weight="1"
+            android:textColor="@color/text_color_setting"
+            style="@style/Search_Edit_Text">
+        </EditText>
+
+        <ImageView
+            android:id="@+id/clear_button"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:src="@drawable/delete"
+            android:layout_margin="8dp"
+            android:visibility="gone"
+            style="@style/delete">
+        </ImageView>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/Base.Theme.PlaylistMaker"
     tools:context=".MainActivity">
 
         <TextView
@@ -14,81 +13,31 @@
             android:layout_height="wrap_content"
             android:paddingTop="16dp"
             android:paddingStart="16dp"
-            android:text="@string/header"
-            android:fontFamily="@font/ys_display_bold_medium"
-            android:textSize="@dimen/text_size_1"/>
+            android:text="@string/header_main" />
 
     <Button
         android:id="@+id/button_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/Button_Main"
         android:layout_marginTop="40dp"
-        android:layout_marginStart="@dimen/button_margin_start_end_bottom"
-        android:layout_marginEnd="@dimen/button_margin_start_end_bottom"
-        android:layout_marginBottom="@dimen/button_margin_start_end_bottom"
-        android:layout_weight="1"
-        android:backgroundTint="@color/button_color"
-        app:cornerRadius="@dimen/button_radius"
-        android:foreground="?attr/selectableItemBackground"
-
         app:icon="@drawable/search"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding"
-        app:iconTint="@color/icon_color"
-
-        android:text="@string/text_button_search"
-        android:textSize="@dimen/text_size_1"
-        android:textColor="@color/text_button_color"
-        android:fontFamily="@font/ys_display_bold_medium"
-        android:textAlignment="center"
-        />
+        android:text="@string/button_search_main"/>
 
     <Button
         android:id="@+id/button_media_library"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/button_margin_start_end_bottom"
-        android:layout_marginEnd="@dimen/button_margin_start_end_bottom"
-        android:layout_marginBottom="@dimen/button_margin_start_end_bottom"
-        android:layout_weight="1"
-        android:backgroundTint="@color/button_color"
-        app:cornerRadius="@dimen/button_radius"
-        android:foreground="?attr/selectableItemBackground"
-
+        style="@style/Button_Main"
         app:icon="@drawable/media_library"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding"
-        app:iconTint="@color/icon_color"
-
-        android:text="@string/text_button_media_library"
-        android:textSize="@dimen/text_size_1"
-        android:textColor="@color/text_button_color"
-        android:fontFamily="@font/ys_display_bold_medium"
-        android:textAlignment="center"
-        />
+        android:text="@string/button_media_library_main"/>
 
     <Button
         android:id="@+id/button_settings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/button_margin_start_end_bottom"
-        android:layout_marginEnd="@dimen/button_margin_start_end_bottom"
-        android:layout_marginBottom="@dimen/button_margin_start_end_bottom"
-        android:layout_weight="1"
-        android:backgroundTint="@color/button_color"
-        app:cornerRadius="@dimen/button_radius"
-        android:foreground="?attr/selectableItemBackground"
-
+        style="@style/Button_Main"
         app:icon="@drawable/settings"
-        app:iconGravity="textStart"
-        app:iconPadding="@dimen/icon_padding"
-        app:iconTint="@color/icon_color"
-
-        android:text="@string/text_button_settings"
-        android:textSize="@dimen/text_size_1"
-        android:textColor="@color/text_button_color"
-        android:fontFamily="@font/ys_display_bold_medium"
-        android:textAlignment="center"
-        />
+        android:text="@string/button_settings_main"/>
 
 </LinearLayout>

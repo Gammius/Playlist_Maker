@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="YS_Medium_22">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textFontWeight">500</item>
+    </style>
+
+    <style name="YS_Regular_16">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textFontWeight">400</item>
+    </style>
+
+    <style name="Button_Main" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">@color/white1</item>
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textColor">@color/black1</item>
+        <item name="android:textAlignment">center</item>
+        <item name="iconGravity">textStart</item>
+        <item name="iconPadding">8dp</item>
+        <item name="cornerRadius">16dp</item>
+        <item name="iconTint">@color/black1</item>
+    </style>
+
+    <style name="Text_View_Settings">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingTop">20dp</item>
+        <item name="android:paddingBottom">20dp</item>
+    </style>
+
+    <style name="Button_Settings" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="iconTint">@color/white1</item>
+        <item name="android:padding">4dp</item>
+        <item name="android:backgroundTint">@color/black1</item>
+    </style>
+
+    <style name="Back_Arrow_Style" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:padding">12dp</item>
+        <item name="iconTint">@color/white1</item>
+        <item name="android:backgroundTint">@color/black1</item>
+    </style>
+
+    <style name="Header_Text_Style">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:padding">8dp</item>
+        <item name="android:textColor">@color/white1</item>
+    </style>
+
+    <style name="Search_Edit_Text">
+        <item name="android:background">@color/white1</item>
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/black1</item>
+        <item name="android:drawableTint">@color/black1</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:hint">@string/search_hint</item>
+        <item name="android:drawableStart">@drawable/search2</item>
+        <item name="android:inputType">text</item>
+        <item name="android:maxLength">15</item>
+        <item name="android:maxLines">1</item>
+    </style>
+
+    <style name="Layout_search">
+        <item name="android:background">@drawable/search_edit_text_night</item>
+    </style>
+
+    <style name="delete">
+        <item name="android:backgroundTint">#ffffff</item>
+    </style>
+
+</resources>
