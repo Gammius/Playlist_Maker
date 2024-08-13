@@ -1,9 +1,6 @@
 package com.example.playlist_maker
 import android.content.Context
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
@@ -12,14 +9,25 @@ import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.playlist_maker.track.Track
+import com.example.playlist_maker.track.TrackAdapter
 
 class SearchActivity : AppCompatActivity() {
     private var searchText: String = ""
     private lateinit var searchEditText: EditText
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var trackAdapter: TrackAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
+
+        recyclerView = findViewById(R.id.recycler_view)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        trackAdapter = TrackAdapter(Track.trackList)
+        recyclerView.adapter = trackAdapter
 
         val buttonBackSettings = findViewById<Button>(R.id.arrow_back)
         buttonBackSettings.setOnClickListener{
@@ -45,9 +53,17 @@ class SearchActivity : AppCompatActivity() {
             onTextChanged = { charSequence,_,_,_ ->
                 searchClearButton.isVisible = !charSequence.isNullOrEmpty()
                 searchText = charSequence.toString()
+                filterTracks(charSequence.toString())
         })
 
     }
+
+    private fun filterTracks(query: String) {
+        val filteredList = Track.filterTracks(query)
+        trackAdapter.updateTracks(filteredList)
+    }
+
+
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
