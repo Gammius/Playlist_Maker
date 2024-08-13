@@ -101,5 +101,9 @@
         <item name="android:textColor">@color/icon_color2</item>
     </style>
 
+    <style name="Item_Track_PlayList_Maker">
+        <item name="android:background">@color/white1</item>
+    </style>
+
 
 </resources>

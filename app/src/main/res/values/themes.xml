@@ -16,8 +16,6 @@
 
     </style>
 
-    <style name="Item.Track.PlayList_Maker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <item name="android:background">@color/white1</item>
-    </style>
+
 
 </resources>
