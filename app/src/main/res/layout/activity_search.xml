@@ -47,9 +47,10 @@
             android:layout_height="28dp"
             android:layout_weight="1"
             android:textColor="@color/text_color_setting"
+            android:imeOptions="actionDone"
+            android:singleLine="true"
             style="@style/Search_Edit_Text">
         </EditText>
-
         <ImageView
             android:id="@+id/clear_button"
             android:layout_width="12dp"
@@ -59,13 +60,65 @@
             android:visibility="gone"
             style="@style/delete">
         </ImageView>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/no_results"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="102dp"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            style="@style/image_no_results"
+            android:layout_gravity="center">
+        </ImageView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_results"
+            style="@style/text_placeholder">
+        </TextView>
+    </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/no_internet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="102dp"
+        android:visibility="gone">
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            style="@style/image_no_internet"
+            android:layout_gravity="center">
+        </ImageView>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/no_internet"
+            style="@style/text_placeholder"
+            >
+        </TextView>
+        <Button
+            android:id="@+id/button_update"
+            android:layout_width="92dp"
+            android:layout_height="44dp"
+            android:layout_marginTop="24dp"
+            android:text="@string/search_update"
+            android:layout_gravity="center"
+            style="@style/Button_Update">
+        </Button>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:visibility="gone" />
 
 </LinearLayout>
