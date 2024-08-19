@@ -1,4 +1,5 @@
 package com.example.playlist_maker
+
 import android.content.Context
 import android.os.Bundle
 import android.view.View
@@ -21,14 +22,12 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
-
     private val trackBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(trackBaseUrl)
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val trackService = retrofit.create(trackApi::class.java)
-
     private var searchText: String = ""
     private lateinit var searchEditText: EditText
     private lateinit var recyclerView: RecyclerView
@@ -44,38 +43,36 @@ class SearchActivity : AppCompatActivity() {
         noResultsView = findViewById(R.id.no_results)
         noInternetView = findViewById(R.id.no_internet)
         buttonUpdate = findViewById(R.id.button_update)
-
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
         trackAdapter = TrackAdapter(emptyList())
         recyclerView.adapter = trackAdapter
 
         val buttonBackSettings = findViewById<Button>(R.id.arrow_back)
-        buttonBackSettings.setOnClickListener{
+        buttonBackSettings.setOnClickListener {
             onBackPressed()
         }
 
         searchEditText = findViewById(R.id.search_edit_text)
-        val searchClearButton =findViewById<ImageView>(R.id.clear_button)
+        val searchClearButton = findViewById<ImageView>(R.id.clear_button)
 
         if (savedInstanceState != null) {
             searchText = savedInstanceState.getString(KEY_SEARCH_TEXT, "")
             searchEditText.setText(searchText)
         }
 
-        searchClearButton.setOnClickListener{
+        searchClearButton.setOnClickListener {
             searchEditText.setText("")
             closeKeyboard(searchEditText.context, searchEditText)
             searchClearButton.visibility = View.GONE
         }
 
-
         searchEditText.addTextChangedListener(
-            onTextChanged = { charSequence,_,_,_ ->
+            onTextChanged = { charSequence, _, _, _ ->
                 searchClearButton.isVisible = !charSequence.isNullOrEmpty()
                 searchText = charSequence.toString()
                 filterTracks(charSequence.toString())
-        })
+            })
 
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -87,10 +84,9 @@ class SearchActivity : AppCompatActivity() {
             }
         }
 
-        buttonUpdate.setOnClickListener{
-            lastFailedQuery?.let {query -> filterTracks(query)}
+        buttonUpdate.setOnClickListener {
+            lastFailedQuery?.let { query -> filterTracks(query) }
         }
-
     }
 
     private fun filterTracks(query: String) {
@@ -103,10 +99,12 @@ class SearchActivity : AppCompatActivity() {
         }
 
         trackService.search(query).enqueue(object : retrofit2.Callback<TrackResponse> {
-            override fun onResponse(call: retrofit2.Call<TrackResponse>, response: retrofit2.Response<TrackResponse>) {
+            override fun onResponse(
+                call: retrofit2.Call<TrackResponse>,
+                response: retrofit2.Response<TrackResponse>
+            ) {
                 if (response.isSuccessful) {
                     val trackList = response.body()?.results ?: emptyList()
-                    trackAdapter.updateTracks(trackList)
                     val filteredTracks = Track.filterTracks(query, trackList)
                     trackAdapter.updateTracks(filteredTracks)
                     noResultsView.isVisible = trackList.isEmpty()
@@ -119,6 +117,7 @@ class SearchActivity : AppCompatActivity() {
                     lastFailedQuery = searchText
                 }
             }
+
             override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
                 noResultsView.isVisible = false
                 recyclerView.isVisible = false
@@ -127,9 +126,10 @@ class SearchActivity : AppCompatActivity() {
             }
         })
     }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(KEY_SEARCH_TEXT,searchText)
+        outState.putString(KEY_SEARCH_TEXT, searchText)
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -142,8 +142,9 @@ class SearchActivity : AppCompatActivity() {
         private const val KEY_SEARCH_TEXT = "searchText"
     }
 
-    private fun closeKeyboard(context: Context, searchEditText: EditText){
-        val closeKeyboard = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    private fun closeKeyboard(context: Context, searchEditText: EditText) {
+        val closeKeyboard =
+            context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         closeKeyboard.hideSoftInputFromWindow(searchEditText.windowToken, 0)
     }
 }

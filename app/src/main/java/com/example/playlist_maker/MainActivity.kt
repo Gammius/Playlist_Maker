@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 
-
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,7 +15,6 @@ class MainActivity : AppCompatActivity() {
             val intentSearch = Intent(this, SearchActivity::class.java)
             startActivity(intentSearch)
         }
-
 
         val buttonMediaLibrary = findViewById<Button>(R.id.button_media_library)
         buttonMediaLibrary.setOnClickListener {
@@ -29,7 +27,5 @@ class MainActivity : AppCompatActivity() {
             val intentSettings = Intent(this, SettingsActivity::class.java)
             startActivity(intentSettings)
         }
-
-
     }
 }

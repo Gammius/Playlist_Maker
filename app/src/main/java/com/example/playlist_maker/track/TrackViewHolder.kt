@@ -19,11 +19,9 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         trackNameTextView.text = track.trackName
         artistNameTextView.text = track.artistName
         trackTimeTextView.text = track.getFormattedTrackTime()
-
-
+        artistNameTextView.requestLayout()
         val context = itemView.context
         val cornerRadiusPx = dpToPx(2f, context)
-
         Glide.with(itemView)
             .load(track.artworkUrl100)
             .placeholder(R.drawable.place_holder)
