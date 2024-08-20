@@ -12,9 +12,18 @@ data class Track(
     companion object {
 
         fun filterTracks(query: String, tracks: List<Track>): List<Track> {
-            return tracks.filter {
-                it.trackName.contains(query, ignoreCase = true) ||
-                        it.artistName.contains(query, ignoreCase = true)
+            val lowerCaseQuery = query.lowercase()
+
+            return tracks.filter { track ->
+                lowerCaseQuery.all { char ->
+                    track.trackName.lowercase().contains(char) || track.artistName.lowercase().contains(char)
+                }
+            }.sortedBy {
+                when {
+                    it.trackName.lowercase().startsWith(lowerCaseQuery) -> 0
+                    it.artistName.lowercase().startsWith(lowerCaseQuery) -> 1
+                    else -> 2
+                }
             }
         }
     }
