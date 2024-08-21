@@ -18,10 +18,12 @@ import com.example.playlist_maker.track.Track
 import com.example.playlist_maker.track.TrackAdapter
 import com.example.playlist_maker.track.TrackResponse
 import com.example.playlist_maker.track.trackApi
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchActivity : AppCompatActivity() {
+    private var currentCall: Call<TrackResponse>? = null
     private val trackBaseUrl = "https://itunes.apple.com"
     private val retrofit = Retrofit.Builder()
         .baseUrl(trackBaseUrl)
@@ -90,6 +92,7 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun filterTracks(query: String) {
+        currentCall?.cancel()
         if (query.isEmpty()) {
             trackAdapter.updateTracks(emptyList())
             noResultsView.isVisible = true
@@ -98,9 +101,10 @@ class SearchActivity : AppCompatActivity() {
             return
         }
 
-        trackService.search(query).enqueue(object : retrofit2.Callback<TrackResponse> {
+        currentCall = trackService.search(query)
+        currentCall?.enqueue(object : retrofit2.Callback<TrackResponse> {
             override fun onResponse(
-                call: retrofit2.Call<TrackResponse>,
+                call: Call<TrackResponse>,
                 response: retrofit2.Response<TrackResponse>
             ) {
                 if (response.isSuccessful) {
@@ -118,7 +122,8 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
 
-            override fun onFailure(call: retrofit2.Call<TrackResponse>, t: Throwable) {
+            override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
+                if (call.isCanceled) return
                 noResultsView.isVisible = false
                 recyclerView.isVisible = false
                 noInternetView.isVisible = true

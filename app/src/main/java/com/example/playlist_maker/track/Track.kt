@@ -15,9 +15,8 @@ data class Track(
             val lowerCaseQuery = query.lowercase()
 
             return tracks.filter { track ->
-                lowerCaseQuery.all { char ->
-                    track.trackName.lowercase().contains(char) || track.artistName.lowercase().contains(char)
-                }
+                track.trackName.lowercase().contains(lowerCaseQuery) ||
+                        track.artistName.lowercase().contains(lowerCaseQuery)
             }.sortedBy {
                 when {
                     it.trackName.lowercase().startsWith(lowerCaseQuery) -> 0
