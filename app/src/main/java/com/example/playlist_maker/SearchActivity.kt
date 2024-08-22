@@ -14,7 +14,6 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlist_maker.track.Track
 import com.example.playlist_maker.track.TrackAdapter
 import com.example.playlist_maker.track.TrackResponse
 import com.example.playlist_maker.track.trackApi
@@ -109,8 +108,7 @@ class SearchActivity : AppCompatActivity() {
             ) {
                 if (response.isSuccessful) {
                     val trackList = response.body()?.results ?: emptyList()
-                    val filteredTracks = Track.filterTracks(query, trackList)
-                    trackAdapter.updateTracks(filteredTracks)
+                    trackAdapter.updateTracks(trackList)
                     noResultsView.isVisible = trackList.isEmpty()
                     recyclerView.isVisible = trackList.isNotEmpty()
                     noInternetView.isVisible = false
