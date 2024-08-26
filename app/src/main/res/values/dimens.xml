@@ -4,4 +4,5 @@
     <dimen name="button_margin_start_end_bottom">16dp</dimen>
     <dimen name="layout_height_setting">60dp</dimen>
     <dimen name="button_size">24dp</dimen>
+    <dimen name="image_placeholder">120dp</dimen>
 </resources>
