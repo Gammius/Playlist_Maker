@@ -41,12 +41,12 @@
             android:text="@string/black_theme_settings"
             tools:ignore="Suspicious0dp" />
 
-        <Switch
-            android:id="@+id/switch1"
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/themeSwitcher"
             android:layout_width="56dp"
-            android:layout_height="48dp"
+            android:layout_height="48dp" />
 
-            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
     </LinearLayout>
 
     <LinearLayout

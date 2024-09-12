@@ -1,14 +1,15 @@
-package com.example.playlist_maker.track
+package com.example.playlist_maker
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlist_maker.R
+import com.example.playlist_maker.track.Track
+import com.example.playlist_maker.track.TrackViewHolder
 
-class TrackAdapter(
-    private var trackList: List<Track>,
-    private var onTrackClick: (Track) -> Unit
+class SearchHistoryAdapter(
+    private var trackList: List<Track>
 ) : RecyclerView.Adapter<TrackViewHolder>() {
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -20,12 +21,9 @@ class TrackAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val track = trackList[position]
         holder.bind(track)
-        holder.itemView.setOnClickListener { onTrackClick(track) }
     }
 
-    override fun getItemCount(): Int {
-        return trackList.size
-    }
+    override fun getItemCount(): Int = trackList.size
 
     fun updateTracks(newTrackList: List<Track>) {
         trackList = newTrackList
