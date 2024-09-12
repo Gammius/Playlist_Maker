@@ -64,6 +64,42 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/search_history_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/search_history_text"
+            style="@style/text_history"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/you_looking" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_search_history"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone" />
+
+
+        <Button
+            android:id="@+id/clear_history_button"
+            style="@style/Button_Update"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:padding="8dp"
+            android:text="@string/clear_history"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/no_results"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -111,8 +147,8 @@
             android:layout_height="36dp"
             android:layout_gravity="center"
             android:layout_marginTop="24dp"
-            android:textAllCaps="false"
-            android:text="@string/search_update" />
+            android:text="@string/search_update"
+            android:textAllCaps="false" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

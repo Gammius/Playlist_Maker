@@ -21,4 +21,6 @@
     <string name="search_update">Обновить</string>
     <string name="no_internet">Проблемы со связью \n \n Загрузка не удалась. Проверьте подключение к интернету</string>
     <string name="no_results">Ничего не нашлось</string>
+    <string name="you_looking">Вы искали</string>
+    <string name="clear_history">Очистить историю</string>
 </resources>

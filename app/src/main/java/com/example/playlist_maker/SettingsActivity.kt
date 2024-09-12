@@ -5,6 +5,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,6 +44,14 @@ class SettingsActivity : AppCompatActivity() {
             val iconArrowIntent =
                 Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_icon_arrow)))
             startActivity(iconArrowIntent)
+        }
+
+        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
+
+        themeSwitcher.isChecked = (applicationContext as App).darkTheme
+
+        themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
+            (applicationContext as App).switchTheme(checked)
         }
     }
 }
