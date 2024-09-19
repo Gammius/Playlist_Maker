@@ -142,5 +142,55 @@
         <item name="android:textAlignment">center</item>
     </style>
 
+    <style name="add_btn_ap" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/oval_btn</item>
+        <item name="android:src">@drawable/add</item>
+    </style>
+
+    <style name="like_btn_ap" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/oval_btn</item>
+        <item name="android:src">@drawable/like</item>
+    </style>
+
+    <style name="play_btn_ap" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/oval_btn</item>
+        <item name="android:src">@drawable/play</item>
+    </style>
+
+    <style name="medium_400_22sp_black1_white1">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">@color/black1</item>
+    </style>
+
+    <style name="medium_400_14sp_black1_white1">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">@color/black1</item>
+    </style>
+
+    <style name="medium_500_14sp_black1_white1">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textColor">@color/black1</item>
+    </style>
+
+    <style name="regular_400_13sp_icon_color2">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">@color/icon_color2</item>
+    </style>
+
+    <style name="regular_400_13sp_black1_white1">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">@color/black1</item>
+    </style>
+
 
 </resources>

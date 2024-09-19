@@ -18,7 +18,7 @@ class TrackViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bind(track: Track) {
         trackNameTextView.text = track.trackName
         artistNameTextView.text = track.artistName
-        trackTimeTextView.text = track.getFormattedTrackTime()
+        trackTimeTextView.text = track.getFormattedTrackTime(track.trackTimeMillis)
         artistNameTextView.requestLayout()
         val context = itemView.context
         val cornerRadiusPx = dpToPx(2f, context)
