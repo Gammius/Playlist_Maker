@@ -1,6 +1,7 @@
 package com.example.playlist_maker
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -14,6 +15,8 @@ import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.playlist_maker.AudioPlayer.AudioPlayer
+import com.example.playlist_maker.track.Track
 import com.example.playlist_maker.track.TrackAdapter
 import com.example.playlist_maker.track.TrackResponse
 import com.example.playlist_maker.track.trackApi
@@ -41,6 +44,11 @@ class SearchActivity : AppCompatActivity() {
     private lateinit var searchHistory: SearchHistory
     private lateinit var recyclerSearchHistory: RecyclerView
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
+    private lateinit var currentTrack: AudioPlayer
+
+    object TrackHolder {
+        var selectedTrack: Track? = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,16 +57,26 @@ class SearchActivity : AppCompatActivity() {
         searchHistory = SearchHistory(this)
         recyclerSearchHistory = findViewById(R.id.recycler_search_history)
         recyclerSearchHistory.layoutManager = LinearLayoutManager(this)
-        searchHistoryAdapter = SearchHistoryAdapter(emptyList())
+        searchHistoryAdapter = SearchHistoryAdapter(emptyList()) { track ->
+            TrackHolder.selectedTrack = track
+            val intent = Intent(this, AudioPlayer::class.java)
+            startActivity(intent)
+        }
         recyclerSearchHistory.adapter = searchHistoryAdapter
         noResultsView = findViewById(R.id.no_results)
         noInternetView = findViewById(R.id.no_internet)
         buttonUpdate = findViewById(R.id.button_update)
         recyclerView = findViewById(R.id.recycler_view)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+
         trackAdapter = TrackAdapter(emptyList()) { track ->
             searchHistory.addTrack(track)
             updateSearchHistory()
+
+            TrackHolder.selectedTrack = track
+            val intent = Intent(this, AudioPlayer::class.java)
+            startActivity(intent)
         }
         recyclerView.adapter = trackAdapter
         searchHistoryContainer = findViewById(R.id.search_history_container)
@@ -178,12 +196,11 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun updateSearchHistory() {
-        searchHistoryAdapter.updateTracks(searchHistory.getHistory())
         val history = searchHistory.getHistory()
+        searchHistoryAdapter.updateTracks(history)
         searchHistoryContainer.visibility =
             if (history.isNotEmpty() && searchEditText.hasFocus()
-                && searchEditText.text.isEmpty()) View.VISIBLE else View.GONE
-        searchHistoryAdapter.updateTracks(history)
-        recyclerSearchHistory.visibility = if (history.isNotEmpty()) View.VISIBLE else View.GONE
+                && searchEditText.text.isEmpty()
+            ) View.VISIBLE else View.GONE
     }
 }
