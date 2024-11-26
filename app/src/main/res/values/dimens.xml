@@ -5,4 +5,5 @@
     <dimen name="layout_height_setting">60dp</dimen>
     <dimen name="button_size">24dp</dimen>
     <dimen name="image_placeholder">120dp</dimen>
+    <dimen name="padding_vertical_8dp">8dp</dimen>
 </resources>

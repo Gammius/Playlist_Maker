@@ -7,7 +7,8 @@ import com.example.playlist_maker.track.Track
 import com.example.playlist_maker.track.TrackViewHolder
 
 class SearchHistoryAdapter(
-    private var trackList: List<Track>
+    private var trackList: List<Track>,
+    private var onTrackClick: (Track) -> Unit
 ) : RecyclerView.Adapter<TrackViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -21,6 +22,9 @@ class SearchHistoryAdapter(
     override fun onBindViewHolder(holder: TrackViewHolder, position: Int) {
         val track = trackList[position]
         holder.bind(track)
+        holder.itemView.setOnClickListener {
+            onTrackClick(track)
+        }
     }
 
     override fun getItemCount(): Int = trackList.size
