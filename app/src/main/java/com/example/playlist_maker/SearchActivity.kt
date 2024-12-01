@@ -53,7 +53,7 @@ class SearchActivity : AppCompatActivity() {
     companion object {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val KEY_SEARCH_TEXT = "searchText"
-        private val CLICK_DEBOUNCE_DELAY = 500L
+        private const val CLICK_DEBOUNCE_DELAY = 500L
     }
 
     private val searchHandler = Handler(Looper.getMainLooper())
@@ -157,13 +157,13 @@ class SearchActivity : AppCompatActivity() {
 
     private fun filterTracks(query: String) {
         currentCall?.cancel()
+        progressBar.visibility = View.VISIBLE
         if (query.isEmpty()) {
             trackAdapter.updateTracks(emptyList())
             noResultsView.visibility =
                 if (query.isEmpty() && searchEditText.text.isNotEmpty()) View.VISIBLE else View.GONE
             noInternetView.isVisible = false
             recyclerView.isVisible = false
-            progressBar.visibility = View.VISIBLE
             return
         }
 
