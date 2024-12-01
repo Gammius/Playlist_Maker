@@ -13,8 +13,8 @@ data class Track(
     val collectionName: String,
     val releaseDate: Date,
     val primaryGenreName: String,
-    val country: String
-
+    val country: String,
+    val previewUrl: String
 ) {
     fun getFormattedTrackTime(milliseconds: Long): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(milliseconds)
