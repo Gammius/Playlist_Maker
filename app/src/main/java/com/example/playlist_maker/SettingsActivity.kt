@@ -1,10 +1,12 @@
 package com.example.playlist_maker
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
+import androidx.core.content.ContextCompat
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
@@ -50,8 +52,20 @@ class SettingsActivity : AppCompatActivity() {
 
         themeSwitcher.isChecked = (applicationContext as App).darkTheme
 
+        applySwitchColors(themeSwitcher)
+
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
             (applicationContext as App).switchTheme(checked)
+            applySwitchColors(themeSwitcher)
         }
+
+
+    }
+    private fun applySwitchColors(switcher: SwitchMaterial) {
+        val thumbColor = if (switcher.isChecked) R.color.blue else R.color.icon_color2
+        val trackColor = if (switcher.isChecked) R.color.trackTintNight else R.color.trackTint
+
+        switcher.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this, thumbColor))
+        switcher.trackTintList = ColorStateList.valueOf(ContextCompat.getColor(this, trackColor))
     }
 }

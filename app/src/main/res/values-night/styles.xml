@@ -37,6 +37,7 @@
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingTop">20dp</item>
         <item name="android:paddingBottom">20dp</item>
+        <item name="android:textColor">@color/white1</item>
     </style>
 
     <style name="Button_Settings" parent="Widget.AppCompat.Button.Borderless">
@@ -155,6 +156,11 @@
     <style name="play_btn_ap" parent="Widget.AppCompat.Button.Borderless">
         <item name="android:background">@drawable/oval_btn_night</item>
         <item name="android:src">@drawable/play_night</item>
+    </style>
+
+    <style name="pause_btn_ap" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:background">@drawable/oval_btn_night</item>
+        <item name="android:src">@drawable/pause_night</item>
     </style>
 
     <style name="medium_400_22sp_black1_white1">

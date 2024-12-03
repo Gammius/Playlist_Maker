@@ -1,6 +1,7 @@
 package com.example.playlist_maker
 
 import android.app.Application
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
 
 const val APP_PREFERENCES = "app_preferences"
@@ -14,6 +15,10 @@ class App : Application() {
         super.onCreate()
         val sharedPreferences = getSharedPreferences(APP_PREFERENCES, MODE_PRIVATE)
         darkTheme = sharedPreferences.getBoolean(DARK_THEME, false)
+        if (sharedPreferences.contains(DARK_THEME).not()) {
+            val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
+            darkTheme = currentNightMode == Configuration.UI_MODE_NIGHT_YES
+        }
         switchTheme(darkTheme)
     }
 
