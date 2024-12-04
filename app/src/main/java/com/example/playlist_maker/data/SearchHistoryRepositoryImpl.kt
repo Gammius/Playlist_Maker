@@ -1,18 +1,19 @@
-package com.example.playlist_maker
+package com.example.playlist_maker.data
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.playlist_maker.track.Track
+import com.example.playlist_maker.domain.api.SearchHistoryRepository
+import com.example.playlist_maker.domain.models.Track
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-class SearchHistory(context: Context) {
+class SearchHistoryRepositoryImpl(context: Context) : SearchHistoryRepository{
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("search_history", Context.MODE_PRIVATE)
     private val gson = Gson()
     private val maxHistorySize = 10
 
-    fun addTrack(track: Track) {
+    override fun addTrack(track: Track) {
         val history = getHistory().toMutableList()
         history.removeIf { it.trackId == track.trackId }
         history.add(0, track)
@@ -22,13 +23,13 @@ class SearchHistory(context: Context) {
         saveHistory(history)
     }
 
-    fun getHistory(): List<Track> {
+    override fun getHistory(): List<Track> {
         val json = sharedPreferences.getString("history", "[]")
         val type = object : TypeToken<List<Track>>() {}.type
         return gson.fromJson(json, type)
     }
 
-    fun clearHistory() {
+    override fun clearHistory() {
         sharedPreferences.edit().remove("history").apply()
     }
 

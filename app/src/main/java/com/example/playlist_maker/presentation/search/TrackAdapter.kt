@@ -1,9 +1,10 @@
-package com.example.playlist_maker.track
+package com.example.playlist_maker.presentation.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlist_maker.R
+import com.example.playlist_maker.domain.models.Track
 
 class TrackAdapter(
     private var trackList: List<Track>,
