@@ -20,14 +20,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.playlist_maker.Creator
 import com.example.playlist_maker.R
-import com.example.playlist_maker.data.TrackRepositoryImpl
 import com.example.playlist_maker.presentation.audioPlayer.AudioPlayer
 import com.example.playlist_maker.domain.models.Track
 import com.example.playlist_maker.data.dto.TrackResponse
-import com.example.playlist_maker.data.network.RetrofitNetworkClient
 import com.example.playlist_maker.domain.api.SearchHistoryInteractor
 import com.example.playlist_maker.domain.api.TrackInteractor
-import com.example.playlist_maker.domain.impl.TrackInteractorImpl
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 
 class SearchActivity : AppCompatActivity() {
@@ -168,17 +168,19 @@ class SearchActivity : AppCompatActivity() {
 
         trackInteractor.search(query, object : TrackInteractor.TrackConsumer {
             override fun consume(trackList: List<Track>) {
-                progressBar.visibility = View.GONE
-                if (trackList.isNotEmpty()) {
+                CoroutineScope(Dispatchers.Main).launch{
+                    progressBar.visibility = View.GONE
+                    if (trackList.isNotEmpty()) {
 
-                    trackAdapter.updateTracks(trackList)
-                    noResultsView.isVisible = trackList.isEmpty()
-                    recyclerView.isVisible = trackList.isNotEmpty()
-                    noInternetView.isVisible = false
-                } else {
-                    noResultsView.isVisible = false
-                    recyclerView.isVisible = false
-                    noInternetView.isVisible = true
+                        trackAdapter.updateTracks(trackList)
+                        noResultsView.isVisible = trackList.isEmpty()
+                        recyclerView.isVisible = trackList.isNotEmpty()
+                        noInternetView.isVisible = false
+                    } else {
+                        noResultsView.isVisible = true
+                        recyclerView.isVisible = false
+                        noInternetView.isVisible = false
+                    }
                 }
             }
         })

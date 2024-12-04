@@ -2,16 +2,21 @@ package com.example.playlist_maker
 
 import android.content.Context
 import com.example.playlist_maker.data.SearchHistoryRepositoryImpl
+import com.example.playlist_maker.data.SettingsRepositoryImpl
 import com.example.playlist_maker.data.TrackRepositoryImpl
 import com.example.playlist_maker.data.network.RetrofitNetworkClient
 import com.example.playlist_maker.domain.api.SearchHistoryInteractor
 import com.example.playlist_maker.domain.api.SearchHistoryRepository
+import com.example.playlist_maker.domain.api.SettingsInteractor
+import com.example.playlist_maker.domain.api.SettingsRepository
 import com.example.playlist_maker.domain.api.TrackInteractor
 import com.example.playlist_maker.domain.api.TrackRepository
 import com.example.playlist_maker.domain.impl.SearchHistoryInteractorImpl
+import com.example.playlist_maker.domain.impl.SettingsInteractorImpl
 import com.example.playlist_maker.domain.impl.TrackInteractorImpl
 
 object Creator {
+
     private fun getTrackRepository(): TrackRepository {
         return TrackRepositoryImpl(RetrofitNetworkClient())
     }
@@ -26,5 +31,13 @@ object Creator {
 
     fun provideSearchHistoryInteractor(context: Context): SearchHistoryInteractor {
         return SearchHistoryInteractorImpl(getSearchHistoryRepository(context))
+    }
+
+    private fun getSettingsRepository(context: Context) : SettingsRepository {
+        return SettingsRepositoryImpl(context)
+    }
+
+    fun providerSettingsInteractor(context: Context) : SettingsInteractor{
+        return SettingsInteractorImpl(getSettingsRepository(context))
     }
 }
