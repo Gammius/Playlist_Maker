@@ -1,4 +1,4 @@
-package com.example.playlist_maker
+package com.example.playlist_maker.presentation.settings
 
 import android.content.Intent
 import android.content.res.ColorStateList
@@ -7,9 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import androidx.core.content.ContextCompat
+import com.example.playlist_maker.Creator
+import com.example.playlist_maker.R
+import com.example.playlist_maker.domain.api.SettingsInteractor
 import com.google.android.material.switchmaterial.SwitchMaterial
 
 class SettingsActivity : AppCompatActivity() {
+
+    private lateinit var settingsInteractor: SettingsInteractor
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -49,22 +55,18 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-
-        themeSwitcher.isChecked = (applicationContext as App).darkTheme
-
+        settingsInteractor = Creator.providerSettingsInteractor(this)
+        themeSwitcher.isChecked = settingsInteractor.darkTheme
         applySwitchColors(themeSwitcher)
-
         themeSwitcher.setOnCheckedChangeListener { switcher, checked ->
-            (applicationContext as App).switchTheme(checked)
+            settingsInteractor.switchTheme(checked)
             applySwitchColors(themeSwitcher)
         }
-
-
     }
+
     private fun applySwitchColors(switcher: SwitchMaterial) {
         val thumbColor = if (switcher.isChecked) R.color.blue else R.color.icon_color2
         val trackColor = if (switcher.isChecked) R.color.trackTintNight else R.color.trackTint
-
         switcher.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this, thumbColor))
         switcher.trackTintList = ColorStateList.valueOf(ContextCompat.getColor(this, trackColor))
     }

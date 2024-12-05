@@ -1,4 +1,4 @@
-package com.example.playlist_maker.track
+package com.example.playlist_maker.domain.models
 
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -20,7 +20,7 @@ data class Track(
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(milliseconds)
     }
 
-    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/',"512x512bb.jpg")
+    fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
 
     fun getFormattedReleaseYear(): String {
         return SimpleDateFormat("yyyy", Locale.getDefault()).format(releaseDate)

@@ -44,8 +44,7 @@
         <com.google.android.material.switchmaterial.SwitchMaterial
             android:id="@+id/themeSwitcher"
             android:layout_width="56dp"
-            android:layout_height="48dp"
-            style="@style/CustomSwitchStyle"/>
+            android:layout_height="48dp" />
 
 
     </LinearLayout>
