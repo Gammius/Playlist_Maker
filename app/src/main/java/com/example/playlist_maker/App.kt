@@ -13,7 +13,7 @@ class App : Application() {
         super.onCreate()
         settingsInteractor = Creator.providerSettingsInteractor(this)
 
-        if (!(settingsInteractor as SettingsInteractorImpl).isDarkThemeSaved()) {
+        if (!settingsInteractor.isDarkThemeSaved()) {
             val currentNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             val isDarkMode =currentNightMode == Configuration.UI_MODE_NIGHT_YES
             settingsInteractor.switchTheme(isDarkMode)

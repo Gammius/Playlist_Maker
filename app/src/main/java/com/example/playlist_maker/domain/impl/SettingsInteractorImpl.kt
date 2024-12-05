@@ -15,7 +15,7 @@ class SettingsInteractorImpl (private val repository: SettingsRepository) : Sett
         repository.switchTheme(isDarkTheme)
     }
 
-    fun isDarkThemeSaved(): Boolean {
-        return (repository as SettingsRepositoryImpl).isDarkThemeSaved()
+    override fun isDarkThemeSaved(): Boolean {
+        return repository .isDarkThemeSaved()
     }
 }
