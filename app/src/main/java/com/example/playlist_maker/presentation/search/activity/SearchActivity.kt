@@ -18,7 +18,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlist_maker.Creator.Creator
+import com.example.playlist_maker.creator.Creator
 import com.example.playlist_maker.R
 import com.example.playlist_maker.domain.search.model.Track
 import com.example.playlist_maker.presentation.audioPlayer.activity.AudioPlayer
@@ -59,7 +59,6 @@ class SearchActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         searchViewModel = ViewModelProvider(
             this, SearchViewModelFactory(
-                application = application,
                 trackInteractor = Creator.provideTrackInteractor(),
                 searchHistoryInteractor = Creator.provideSearchHistoryInteractor(this)
             )

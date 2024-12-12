@@ -1,18 +1,16 @@
 package com.example.playlist_maker.presentation.search.view_model
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.playlist_maker.domain.search.TrackInteractor
 import com.example.playlist_maker.domain.search.model.Track
 import com.example.playlist_maker.domain.searchHistory.SearchHistoryInteractor
 
 class SearchViewModel(
-    application: Application,
     private val trackInteractor: TrackInteractor,
     private val searchHistoryInteractor: SearchHistoryInteractor
-) : AndroidViewModel(application) {
+) : ViewModel() {
 
     private val _screenState = MutableLiveData(SearchScreenState())
     val screenState: LiveData<SearchScreenState> get() = _screenState
@@ -37,25 +35,18 @@ class SearchViewModel(
         )
 
         trackInteractor.search(query, object : TrackInteractor.TrackConsumer {
-            override fun consume(trackList: List<Track>, resultCode: Int) {
+            override fun consume(trackList: List<Track>?) {
                 _screenState.value = _screenState.value?.copy(isLoading = false)
 
-                if (resultCode == 200) {
-                    if (trackList.isNotEmpty()) {
-                        _screenState.value = _screenState.value?.copy(
-                            trackList = trackList,
-                            noResults = false,
-                        )
-                    } else {
-                        _screenState.value = _screenState.value?.copy(
-                            trackList = emptyList(),
-                            noResults = true,
-                        )
-                    }
-                } else {
+                if (trackList == null) {
                     _screenState.value = _screenState.value?.copy(
                         noInternet = true,
-                        trackList = emptyList(),
+                        trackList = emptyList()
+                    )
+                } else  {
+                    _screenState.value = _screenState.value?.copy(
+                        trackList = if (trackList.isNotEmpty()) trackList else emptyList(),
+                        noResults = trackList.isEmpty()
                     )
                 }
                 _screenState.value = _screenState.value?.copy(lastFailedQuery = query)

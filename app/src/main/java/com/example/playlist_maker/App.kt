@@ -3,7 +3,7 @@ package com.example.playlist_maker
 import android.app.Application
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatDelegate
-import com.example.playlist_maker.Creator.Creator
+import com.example.playlist_maker.creator.Creator
 import com.example.playlist_maker.domain.settings.SettingsInteractor
 
 class App : Application() {

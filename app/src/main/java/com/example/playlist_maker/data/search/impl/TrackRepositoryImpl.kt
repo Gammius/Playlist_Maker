@@ -2,12 +2,12 @@ package com.example.playlist_maker.data.search.impl
 
 import com.example.playlist_maker.data.search.NetworkClient
 import com.example.playlist_maker.data.search.dto.TrackRequest
-import com.example.playlist_maker.data.search.TrackRepository
+import com.example.playlist_maker.domain.search.TrackRepository
 import com.example.playlist_maker.domain.search.model.Track
 
 class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepository {
 
-    override fun search(query: String, callback: (List<Track>, Int) -> Unit) {
+    override fun search(query: String, callback: (List<Track>?) -> Unit) {
         networkClient.doRequest(TrackRequest(query)) { response ->
             if (response.resultCode == 200) {
                 val tracks = response.results.map {
@@ -24,9 +24,9 @@ class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepos
                         it.previewUrl
                     )
                 }
-                callback(tracks, response.resultCode)
+                callback(tracks)
             } else {
-                callback(emptyList(), response.resultCode)
+                callback(null)
             }
         }
     }

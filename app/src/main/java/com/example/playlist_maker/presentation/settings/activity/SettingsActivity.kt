@@ -7,8 +7,9 @@ import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
-import com.example.playlist_maker.Creator.Creator
+import com.example.playlist_maker.creator.Creator
 import com.example.playlist_maker.R
+import com.example.playlist_maker.domain.sharing.model.EmailData
 import com.example.playlist_maker.presentation.settings.view_model.SettingsViewModelFactory
 import com.example.practicum.playlist.ui.settings.view_model.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
@@ -20,12 +21,17 @@ class SettingsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val messageIconRound = getString(R.string.message_icon_round)
+        val urlIconArrow = getString(R.string.url_icon_arrow)
+        val mailUserIconCall = getString(R.string.mail_user_icon_call)
+        val subjectIconCall = getString(R.string.subject_icon_call)
+        val messageIconCall = getString(R.string.message_icon_call)
+
         viewModel = ViewModelProvider(
             this,
             SettingsViewModelFactory(
                 sharingInteractor = Creator.providerSharingInteractor(this),
-                settingsInteractor = Creator.providerSettingsInteractor(this),
-                context = applicationContext
+                settingsInteractor = Creator.providerSettingsInteractor(this)
             )
         ).get(SettingsViewModel::class.java)
 
@@ -38,17 +44,22 @@ class SettingsActivity : ComponentActivity() {
 
         val buttonIconRound = findViewById<Button>(R.id.icon_round)
         buttonIconRound.setOnClickListener {
-            viewModel.shareAppLink()
+            viewModel.shareAppLink(messageIconRound)
         }
 
         val buttonIconCall = findViewById<Button>(R.id.icon_call)
         buttonIconCall.setOnClickListener {
-            viewModel.openSupportEmail()
+            val emailData = EmailData(
+                email = mailUserIconCall,
+                subject = subjectIconCall,
+                body = messageIconCall
+            )
+            viewModel.openSupportEmail(emailData)
         }
 
         val buttonIconArrow = findViewById<Button>(R.id.arrow)
         buttonIconArrow.setOnClickListener {
-            viewModel.openSupportLink()
+            viewModel.openSupportLink(urlIconArrow)
         }
 
         val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
@@ -64,7 +75,6 @@ class SettingsActivity : ComponentActivity() {
             applySwitchColors(themeSwitcher)
         }
     }
-
     private fun applySwitchColors(switcher: SwitchMaterial) {
         val thumbColor = if (switcher.isChecked) R.color.blue else R.color.icon_color2
         val trackColor = if (switcher.isChecked) R.color.trackTintNight else R.color.trackTint

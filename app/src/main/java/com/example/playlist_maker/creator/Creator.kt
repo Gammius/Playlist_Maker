@@ -1,21 +1,21 @@
-package com.example.playlist_maker.Creator
+package com.example.playlist_maker.creator
 
 import android.content.Context
 import android.media.MediaPlayer
-import com.example.playlist_maker.data.audioPlayer.AudioPlayerRepository
+import com.example.playlist_maker.domain.audioPlayer.AudioPlayerRepository
 import com.example.playlist_maker.data.audioPlayer.impl.AudioPlayerRepositoryImpl
 import com.example.playlist_maker.data.searchHistory.impl.SearchHistoryRepositoryImpl
 import com.example.playlist_maker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlist_maker.data.search.impl.TrackRepositoryImpl
 import com.example.playlist_maker.data.search.network.RetrofitNetworkClient
 import com.example.playlist_maker.domain.searchHistory.SearchHistoryInteractor
-import com.example.playlist_maker.data.searchHistory.SearchHistoryRepository
+import com.example.playlist_maker.domain.searchHistory.SearchHistoryRepository
 import com.example.playlist_maker.domain.settings.SettingsInteractor
-import com.example.playlist_maker.data.settings.SettingsRepository
-import com.example.playlist_maker.data.sharing.ExternalNavigator
+import com.example.playlist_maker.domain.settings.SettingsRepository
+import com.example.playlist_maker.domain.sharing.ExternalNavigator
 import com.example.playlist_maker.data.sharing.impl.ExternalNavigatorImpl
 import com.example.playlist_maker.domain.search.TrackInteractor
-import com.example.playlist_maker.data.search.TrackRepository
+import com.example.playlist_maker.domain.search.TrackRepository
 import com.example.playlist_maker.domain.audioPlayer.AudioPlayerInteractor
 import com.example.playlist_maker.domain.audioPlayer.impl.AudioPlayerInteractorImpl
 import com.example.playlist_maker.domain.searchHistory.impl.SearchHistoryInteractorImpl

@@ -2,7 +2,7 @@ package com.example.playlist_maker.data.settings.impl
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.example.playlist_maker.data.settings.SettingsRepository
+import com.example.playlist_maker.domain.settings.SettingsRepository
 import com.example.playlist_maker.domain.settings.model.ThemeSettings
 
 const val APP_PREFERENCES = "app_preferences"

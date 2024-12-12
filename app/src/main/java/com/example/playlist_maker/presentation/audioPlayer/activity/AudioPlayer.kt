@@ -3,16 +3,16 @@ package com.example.playlist_maker.presentation.audioPlayer.activity
 import com.example.playlist_maker.presentation.audioPlayer.view_model.AudioPlayerViewModel
 import AudioPlayerViewModelFactory
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlist_maker.Creator.Creator
+import com.example.playlist_maker.creator.Creator
 import com.example.playlist_maker.R
 import com.example.playlist_maker.Utils.dpToPx
 import com.example.playlist_maker.presentation.search.activity.SearchActivity.TrackHolder
@@ -39,20 +39,21 @@ class AudioPlayer : AppCompatActivity() {
 
         setContentView(R.layout.activity_audio_player)
 
-        play = findViewById(R.id.play_track_btn)
-        pause = findViewById(R.id.pause_track_btn)
-        trackTimeDemo = findViewById(R.id.track_time_demo)
-
         val buttonBack = findViewById<Button>(R.id.arrow_back)
         buttonBack.setOnClickListener {
             onBackPressed()
         }
 
         audioPlayerViewModel.audioPlayerState.observe(this) { state ->
+            play.isVisible = state.playButtonVisible
+            pause.isVisible = state.pauseButtonVisible
             trackTimeDemo.text = formatTime(state.currentTime)
-            play.visibility = if (state.playButtonVisible) View.VISIBLE else View.GONE
-            pause.visibility = if (state.pauseButtonVisible) View.VISIBLE else View.GONE
         }
+
+        play = findViewById(R.id.play_track_btn)
+        pause = findViewById(R.id.pause_track_btn)
+        trackTimeDemo = findViewById(R.id.track_time_demo)
+
 
         audioPlayerViewModel.preparePlayer(track?.previewUrl ?: "")
 
