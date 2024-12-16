@@ -17,6 +17,10 @@ converterGson = "2.11.0"
 roomKtx = "2.6.1"
 lifecycleViewmodelKtx = "2.8.7"
 kotlinxCoroutinesAndroid = "1.9.0"
+koinAndroid = "4.1.0-Beta1"
+koinCore = "3.3.0"
+koinAndroidVersion = "3.3.0"
+insertKoinKoinAndroid = "3.3.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "kotlin" }
@@ -35,6 +39,10 @@ converter-gson = { group = "com.squareup.retrofit2", name = "converter-gson", ve
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "roomKtx" }
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycleViewmodelKtx" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koinAndroid" }
+koin-core = { group = "org.koin", name = "koin-core", version.ref = "koinCore" }
+koin-koin-android = { group = "org.koin", name = "koin-android", version.ref = "koinAndroidVersion" }
+insert-koin-koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "insertKoinKoinAndroid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
