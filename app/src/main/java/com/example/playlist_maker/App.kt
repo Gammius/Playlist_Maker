@@ -2,8 +2,9 @@ package com.example.playlist_maker
 
 import android.app.Application
 import android.content.res.Configuration
-import com.example.playlist_maker.domain.api.SettingsInteractor
-import com.example.playlist_maker.domain.impl.SettingsInteractorImpl
+import androidx.appcompat.app.AppCompatDelegate
+import com.example.playlist_maker.creator.Creator
+import com.example.playlist_maker.domain.settings.SettingsInteractor
 
 class App : Application() {
 
@@ -20,5 +21,16 @@ class App : Application() {
         } else {
             settingsInteractor.switchTheme(settingsInteractor.darkTheme)
         }
+        updateTheme(settingsInteractor.darkTheme)
+    }
+
+    private fun updateTheme(isDarkTheme: Boolean) {
+        AppCompatDelegate.setDefaultNightMode(
+            if (isDarkTheme) {
+                AppCompatDelegate.MODE_NIGHT_YES
+            } else {
+                AppCompatDelegate.MODE_NIGHT_NO
+            }
+        )
     }
 }
