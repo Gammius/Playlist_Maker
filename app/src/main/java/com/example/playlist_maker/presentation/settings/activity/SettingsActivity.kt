@@ -3,7 +3,7 @@ package com.example.playlist_maker.presentation.settings.activity
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import com.example.playlist_maker.R
@@ -12,8 +12,7 @@ import com.example.practicum.playlist.ui.settings.view_model.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : ComponentActivity() {
-
+class SettingsActivity : AppCompatActivity() {
     private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +61,6 @@ class SettingsActivity : ComponentActivity() {
         themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             viewModel.switchTheme(isChecked)
             updateTheme(isChecked)
-            applySwitchColors(themeSwitcher)
         }
     }
     private fun applySwitchColors(switcher: SwitchMaterial) {

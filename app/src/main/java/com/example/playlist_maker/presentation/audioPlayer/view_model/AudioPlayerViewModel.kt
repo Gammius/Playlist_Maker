@@ -39,7 +39,9 @@ class AudioPlayerViewModel(
             onCompletion = {
                 _audioPlayerState.value = _audioPlayerState.value?.copy(
                     playerState = STATE_PREPARED,
-                    currentTime = 0L
+                    currentTime = 0L,
+                    playButtonVisible = true,
+                    pauseButtonVisible = false
                 )
             })
     }

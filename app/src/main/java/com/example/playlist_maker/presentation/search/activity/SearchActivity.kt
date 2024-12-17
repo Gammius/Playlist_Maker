@@ -132,12 +132,7 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
             searchHistoryContainer.isVisible =
-                state.searchHistoryVisible && !state.isSearchFocused && state.searchText.isEmpty()
-            if (state.isSearchFocused) {
-                searchHistoryContainer.isVisible = false
-            } else if (state.searchText.isEmpty()) {
-                searchHistoryContainer.isVisible = true
-            }
+                state.searchHistoryVisible && state.isSearchFocused && state.searchText.isEmpty()
         }
 
         searchClearButton.setOnClickListener {
