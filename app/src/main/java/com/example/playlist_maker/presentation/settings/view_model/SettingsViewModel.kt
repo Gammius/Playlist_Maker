@@ -17,13 +17,12 @@ class SettingsViewModel(
     val themeSettings: LiveData<ThemeSettings> get() = _themeSettings
 
     init {
-        val currentTheme = settingsInteractor.darkTheme
-        _themeSettings.value = ThemeSettings(isDarkTheme = currentTheme)
+        _themeSettings.value = ThemeSettings(isDarkTheme = settingsInteractor.darkTheme)
     }
 
     fun switchTheme(isDarkTheme: Boolean) {
         settingsInteractor.switchTheme(isDarkTheme)
-        _themeSettings.value = ThemeSettings(isDarkTheme = settingsInteractor.darkTheme)
+        _themeSettings.value = ThemeSettings(isDarkTheme = isDarkTheme)
     }
 
     fun shareAppLink(messageIconRound: String) {

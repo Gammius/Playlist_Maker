@@ -1,7 +1,6 @@
 package com.example.playlist_maker.presentation.audioPlayer.activity
 
 import com.example.playlist_maker.presentation.audioPlayer.view_model.AudioPlayerViewModel
-import AudioPlayerViewModelFactory
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -9,18 +8,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.example.playlist_maker.creator.Creator
 import com.example.playlist_maker.R
 import com.example.playlist_maker.Utils.dpToPx
 import com.example.playlist_maker.presentation.search.activity.SearchActivity.TrackHolder
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class AudioPlayer : AppCompatActivity() {
 
-    private lateinit var audioPlayerViewModel: AudioPlayerViewModel
+    private val audioPlayerViewModel: AudioPlayerViewModel by viewModel()
 
     private lateinit var play: ImageButton
     private lateinit var pause: ImageButton
@@ -30,12 +28,6 @@ class AudioPlayer : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        audioPlayerViewModel = ViewModelProvider(
-            this,
-            AudioPlayerViewModelFactory(
-                audioPlayerInteractor = Creator.providerAudioPlayerInteractor(),
-            )
-        ).get(AudioPlayerViewModel::class.java)
 
         setContentView(R.layout.activity_audio_player)
 

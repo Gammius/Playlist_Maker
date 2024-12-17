@@ -15,19 +15,17 @@ import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.playlist_maker.creator.Creator
 import com.example.playlist_maker.R
 import com.example.playlist_maker.domain.search.model.Track
 import com.example.playlist_maker.presentation.audioPlayer.activity.AudioPlayer
 import com.example.playlist_maker.presentation.search.view_model.SearchViewModel
-import com.example.playlist_maker.presentation.search.view_model.SearchViewModelFactory
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchActivity : AppCompatActivity() {
 
-    private lateinit var searchViewModel: SearchViewModel
+    private val searchViewModel: SearchViewModel by viewModel()
     private lateinit var searchEditText: EditText
     private lateinit var recyclerView: RecyclerView
     private lateinit var progressBar: ProgressBar
@@ -57,12 +55,7 @@ class SearchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        searchViewModel = ViewModelProvider(
-            this, SearchViewModelFactory(
-                trackInteractor = Creator.provideTrackInteractor(),
-                searchHistoryInteractor = Creator.provideSearchHistoryInteractor(this)
-            )
-        ).get(SearchViewModel::class.java)
+
 
         setContentView(R.layout.activity_search)
         searchEditText = findViewById(R.id.search_edit_text)
@@ -139,12 +132,7 @@ class SearchActivity : AppCompatActivity() {
                 }
             }
             searchHistoryContainer.isVisible =
-                state.searchHistoryVisible && !state.isSearchFocused && state.searchText.isEmpty()
-            if (state.isSearchFocused) {
-                searchHistoryContainer.isVisible = false
-            } else if (state.searchText.isEmpty()) {
-                searchHistoryContainer.isVisible = true
-            }
+                state.searchHistoryVisible && state.isSearchFocused && state.searchText.isEmpty() && state.historyList.isNotEmpty()
         }
 
         searchClearButton.setOnClickListener {

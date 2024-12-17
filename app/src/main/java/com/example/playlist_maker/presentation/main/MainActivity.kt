@@ -9,6 +9,7 @@ import com.example.playlist_maker.presentation.mediaLibrary.MediaLibraryActivity
 import com.example.playlist_maker.presentation.search.activity.SearchActivity
 import com.example.playlist_maker.presentation.settings.activity.SettingsActivity
 
+
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

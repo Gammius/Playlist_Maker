@@ -3,20 +3,17 @@ package com.example.playlist_maker.presentation.settings.activity
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.widget.Button
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.ViewModelProvider
-import com.example.playlist_maker.creator.Creator
 import com.example.playlist_maker.R
 import com.example.playlist_maker.domain.sharing.model.EmailData
-import com.example.playlist_maker.presentation.settings.view_model.SettingsViewModelFactory
 import com.example.practicum.playlist.ui.settings.view_model.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : ComponentActivity() {
-
-    private lateinit var viewModel: SettingsViewModel
+class SettingsActivity : AppCompatActivity() {
+    private val viewModel: SettingsViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,14 +23,6 @@ class SettingsActivity : ComponentActivity() {
         val mailUserIconCall = getString(R.string.mail_user_icon_call)
         val subjectIconCall = getString(R.string.subject_icon_call)
         val messageIconCall = getString(R.string.message_icon_call)
-
-        viewModel = ViewModelProvider(
-            this,
-            SettingsViewModelFactory(
-                sharingInteractor = Creator.providerSharingInteractor(this),
-                settingsInteractor = Creator.providerSettingsInteractor(this)
-            )
-        ).get(SettingsViewModel::class.java)
 
         setContentView(R.layout.activity_settings)
 
@@ -72,7 +61,6 @@ class SettingsActivity : ComponentActivity() {
         themeSwitcher.setOnCheckedChangeListener { _, isChecked ->
             viewModel.switchTheme(isChecked)
             updateTheme(isChecked)
-            applySwitchColors(themeSwitcher)
         }
     }
     private fun applySwitchColors(switcher: SwitchMaterial) {
