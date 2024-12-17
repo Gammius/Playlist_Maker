@@ -62,19 +62,21 @@ class SearchViewModel(
     fun clearHistory() {
         searchHistoryInteractor.clearHistory()
         loadSearchHistory()
+        _screenState.value = _screenState.value?.copy(
+            trackList = emptyList()
+        )
     }
 
     private fun loadSearchHistory() {
         _screenState.value = _screenState.value?.copy(
             historyList = searchHistoryInteractor.getHistory(),
-            searchHistoryVisible = true
+            searchHistoryVisible = true,
         )
     }
 
     fun clearSearch() {
         _screenState.value = _screenState.value?.copy(
             searchText = "",
-            searchHistoryVisible = false
         )
     }
 
