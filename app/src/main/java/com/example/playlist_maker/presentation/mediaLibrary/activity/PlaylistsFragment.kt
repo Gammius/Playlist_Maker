@@ -18,10 +18,7 @@ class PlaylistsFragment : Fragment() {
 
     companion object {
         fun newInstance(): PlaylistsFragment {
-            return PlaylistsFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+            return PlaylistsFragment()
         }
     }
 

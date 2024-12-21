@@ -18,10 +18,7 @@ class FavoritesFragment : Fragment() {
 
     companion object {
         fun newInstance(): FavoritesFragment {
-            return FavoritesFragment().apply {
-                arguments = Bundle().apply {
-                }
-            }
+            return FavoritesFragment()
         }
     }
 
