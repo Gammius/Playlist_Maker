@@ -12,7 +12,6 @@ class MediaLibraryViewModel : ViewModel() {
 
     init {
         _mediaLibrary.value = MediaLibraryActivityState(
-            tabTitles = listOf("Избранные треки", "Плейлисты"),
             selectedTabIndex = 0
         )
     }

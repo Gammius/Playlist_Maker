@@ -2,6 +2,7 @@ package com.example.playlist_maker.presentation.mediaLibrary.activity
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.playlist_maker.R
 import com.example.playlist_maker.databinding.ActivityMediaLibraryBinding
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.MediaLibraryViewModel
 import com.google.android.material.tabs.TabLayoutMediator
@@ -19,6 +20,11 @@ class MediaLibraryActivity : AppCompatActivity() {
         binding = ActivityMediaLibraryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val tabTitles = listOf(getString(
+            R.string.tab_favorites),
+            getString(R.string.tab_playlists)
+        )
+
         binding.arrowBack.setOnClickListener {
             onBackPressed()
         }
@@ -26,9 +32,7 @@ class MediaLibraryActivity : AppCompatActivity() {
         binding.viewPagerML.adapter = MediaLibraryAdapter(this)
 
         tabMediator = TabLayoutMediator(binding.tabLayoutML, binding.viewPagerML) { tab, position ->
-            mediaLibraryViewModel.mediaLibrary.value?.let { mediaLibrary ->
-                tab.text = mediaLibrary.tabTitles[position]
-            }
+                tab.text = tabTitles[position]
         }
         tabMediator.attach()
 
