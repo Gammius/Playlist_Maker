@@ -28,4 +28,8 @@
     <string name="year_text_ap">Год</string>
     <string name="genre_text_ap">Жанр</string>
     <string name="country_text_ap">Страна</string>
+    <string name="Media_Library">Медиатека</string>
+    <string name="no_playlist">Вы не создали ни одного плейлиста</string>
+    <string name="btn_new_playlist">Новый плейлист</string>
+    <string name="no_media">Ваша медиатека пуста</string>
 </resources>
