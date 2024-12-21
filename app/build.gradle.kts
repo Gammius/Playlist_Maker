@@ -4,6 +4,7 @@ plugins {
 }
 
 android {
+
     namespace = "com.example.playlist_maker"
     compileSdk = 34
 
@@ -15,6 +16,10 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    viewBinding {
+        enable = true
     }
 
     buildTypes {
@@ -51,6 +56,9 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.insert.koin.koin.android)
+    implementation(libs.androidx.fragment.ktx)
+    implementation(libs.androidx.viewpager2)
+    implementation(libs.androidx.viewbinding)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

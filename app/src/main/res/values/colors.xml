@@ -10,4 +10,5 @@
     <color name="white1">#FFFFFF</color>
     <color name="trackTint">#E6E8EB</color>
     <color name="trackTintNight">#9FBBF3</color>
+    <color name="bg_ml">#FFFFFF</color>
 </resources>

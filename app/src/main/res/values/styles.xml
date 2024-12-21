@@ -178,7 +178,7 @@
 
     <style name="medium_500_14sp_black1_white1">
         <item name="android:fontFamily">@font/ys_display_regular</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textFontWeight">500</item>
         <item name="android:textColor">@color/black1</item>
     </style>
@@ -197,5 +197,18 @@
         <item name="android:textColor">@color/black1</item>
     </style>
 
+    <style name="TabLayout1" parent="Widget.Design.TabLayout">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textAllCaps">false</item>
+    </style>
+
+    <style name="TabLayout2" parent="Base.Widget.Material3.TabLayout">
+        <item name="tabTextColor">@color/black1</item>
+        <item name="tabSelectedTextColor">@color/black1</item>
+        <item name="tabIndicatorColor">@color/black1</item>
+        <item name="tabBackground">@color/white1</item>
+    </style>
 
 </resources>

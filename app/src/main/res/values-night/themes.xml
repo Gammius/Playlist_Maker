@@ -19,5 +19,8 @@
         <item name="android:background">@color/black1</item>
     </style>
 
+    <style name="MediaLibrary.Theme.PlayList_Maker" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    </style>
+
 
 </resources>
