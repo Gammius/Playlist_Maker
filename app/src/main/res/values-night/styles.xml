@@ -205,4 +205,10 @@
         <item name="tabBackground">@color/black1</item>
     </style>
 
+    <style name="btv">
+        <item name="itemTextColor">@drawable/bottom_nav_item_color</item>
+        <item name="itemIconTint">@drawable/bottom_nav_item_color</item>
+        <item name="itemBackground">@color/bg_ml</item>
+    </style>
+
 </resources>

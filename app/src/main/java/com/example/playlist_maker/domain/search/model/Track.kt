@@ -21,8 +21,4 @@ data class Track(
     }
 
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
-
-    fun getFormattedReleaseYear(): String {
-        return SimpleDateFormat("yyyy", Locale.getDefault()).format(releaseDate)
-    }
 }
