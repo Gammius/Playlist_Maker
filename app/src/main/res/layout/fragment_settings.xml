@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".presentation.settings.activity.SettingsActivity">
+    android:background="@color/bg_ml"
+    tools:context=".presentation.settings.activity.SettingsFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -13,13 +14,6 @@
         android:layout_marginBottom="24dp"
         android:orientation="horizontal"
         android:padding="4dp">
-
-        <Button
-            android:id="@+id/arrow_back"
-            style="@style/Back_Arrow_Style"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            app:icon="@drawable/arrow1" />
 
         <TextView
             android:id="@+id/text_settings_header"
