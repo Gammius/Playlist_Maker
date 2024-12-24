@@ -191,6 +191,13 @@
         <item name="android:textColor">@color/icon_color2</item>
     </style>
 
+    <style name="regular_400_13sp_black1_white1">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="android:textColor">@color/white1</item>
+    </style>
+
     <style name="TabLayout1" parent="Widget.Design.TabLayout">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">14sp</item>

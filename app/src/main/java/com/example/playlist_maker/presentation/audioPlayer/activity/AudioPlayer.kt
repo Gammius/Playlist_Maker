@@ -13,8 +13,6 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlist_maker.R
 import com.example.playlist_maker.Utils.dpToPx
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 
 class AudioPlayer : AppCompatActivity() {
@@ -61,13 +59,13 @@ class AudioPlayer : AppCompatActivity() {
         val primaryGenreNameView: TextView = findViewById(R.id.genre_ap)
         val countryView: TextView = findViewById(R.id.country_ap)
 
-        trackNameTextView.text = trackName ?: "1"
-        artistNameTextView.text = artistName ?: "2"
+        trackNameTextView.text = trackName ?: ""
+        artistNameTextView.text = artistName ?: ""
         trackTimeTextView.text = formatTime(trackTimeMillis ?: 0L)
-        collectionNameView.text = collectionName ?: "4"
-        releaseDateView.text = getFormattedReleaseYear(releaseDate)
-        primaryGenreNameView.text = primaryGenreName ?: "6"
-        countryView.text = country ?: "7"
+        collectionNameView.text = collectionName ?: ""
+        releaseDateView.text = releaseDate ?: ""
+        primaryGenreNameView.text = primaryGenreName ?: ""
+        countryView.text = country ?: ""
         artistNameTextView.requestLayout()
         val cornerRadiusPx = dpToPx(8f, this)
         Glide.with(this)
@@ -108,17 +106,6 @@ class AudioPlayer : AppCompatActivity() {
         val minutes = (time / 1000) / 60
         val seconds = (time / 1000) % 60
         return String.format("%02d:%02d", minutes, seconds)
-    }
-
-    fun getFormattedReleaseYear(releaseDate: String?): String {
-        return try {
-            val dateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
-            val date = dateFormat.parse(releaseDate)
-            val yearFormat = SimpleDateFormat("yyyy", Locale.getDefault())
-            yearFormat.format(date)
-        } catch (e: Exception) {
-            ""
-        }
     }
 
     override fun onPause() {

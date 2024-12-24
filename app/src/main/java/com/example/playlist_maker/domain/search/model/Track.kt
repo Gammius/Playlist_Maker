@@ -11,13 +11,21 @@ data class Track(
     val trackTimeMillis: Long,
     val artworkUrl100: String,
     val collectionName: String,
-    val releaseDate: Date,
+    val releaseDate: Date?,
     val primaryGenreName: String,
     val country: String,
     val previewUrl: String
 ) {
     fun getFormattedTrackTime(milliseconds: Long): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(milliseconds)
+    }
+
+    fun getFormattedReleaseYear(releaseDate: Date?): String {
+        return if (releaseDate != null) {
+            SimpleDateFormat("yyyy", Locale.getDefault()).format(releaseDate)
+        } else {
+            ""
+        }
     }
 
     fun getCoverArtwork() = artworkUrl100.replaceAfterLast('/', "512x512bb.jpg")
