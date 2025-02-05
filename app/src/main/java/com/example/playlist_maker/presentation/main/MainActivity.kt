@@ -1,36 +1,39 @@
 package com.example.playlist_maker.presentation.main
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.setupWithNavController
 import com.example.playlist_maker.R
-import com.example.playlist_maker.presentation.mediaLibrary.activity.MediaLibraryActivity
-import com.example.playlist_maker.presentation.search.activity.SearchActivity
-import com.example.playlist_maker.presentation.settings.activity.SettingsActivity
-
+import com.example.playlist_maker.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
+
+    private var _binding: ActivityMainBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        _binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val buttonSearch = findViewById<Button>(R.id.button_search)
-        buttonSearch.setOnClickListener {
-            val intentSearch = Intent(this, SearchActivity::class.java)
-            startActivity(intentSearch)
-        }
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
-        val buttonMediaLibrary = findViewById<Button>(R.id.button_media_library)
-        buttonMediaLibrary.setOnClickListener {
-            val intentMediaLibrary = Intent(this, MediaLibraryActivity::class.java)
-            startActivity(intentMediaLibrary)
-        }
+        binding.bottomNavigationView.setupWithNavController(navController)
 
-        val buttonSettings = findViewById<Button>(R.id.button_settings)
-        buttonSettings.setOnClickListener {
-            val intentSettings = Intent(this, SettingsActivity::class.java)
-            startActivity(intentSettings)
+        binding.bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.searchFragment -> navController.navigate(R.id.searchFragment)
+                R.id.mediaLibraryFragment -> navController.navigate(R.id.mediaLibraryFragment)
+                R.id.settingsFragment -> navController.navigate(R.id.settingsFragment)
+            }
+            true
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

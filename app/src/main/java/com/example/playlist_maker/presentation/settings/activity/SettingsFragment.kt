@@ -2,21 +2,34 @@ package com.example.playlist_maker.presentation.settings.activity
 
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.widget.Button
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.playlist_maker.R
+import com.example.playlist_maker.databinding.FragmentSettingsBinding
 import com.example.playlist_maker.domain.sharing.model.EmailData
 import com.example.practicum.playlist.ui.settings.view_model.SettingsViewModel
 import com.google.android.material.switchmaterial.SwitchMaterial
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SettingsActivity : AppCompatActivity() {
+class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private val viewModel: SettingsViewModel by viewModel()
+    private var _binding: FragmentSettingsBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSettingsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val messageIconRound = getString(R.string.message_icon_round)
         val urlIconArrow = getString(R.string.url_icon_arrow)
@@ -24,20 +37,11 @@ class SettingsActivity : AppCompatActivity() {
         val subjectIconCall = getString(R.string.subject_icon_call)
         val messageIconCall = getString(R.string.message_icon_call)
 
-        setContentView(R.layout.activity_settings)
-
-        val buttonBackSettings = findViewById<Button>(R.id.arrow_back)
-        buttonBackSettings.setOnClickListener {
-            onBackPressed()
-        }
-
-        val buttonIconRound = findViewById<Button>(R.id.icon_round)
-        buttonIconRound.setOnClickListener {
+        binding.iconRound.setOnClickListener {
             viewModel.shareAppLink(messageIconRound)
         }
 
-        val buttonIconCall = findViewById<Button>(R.id.icon_call)
-        buttonIconCall.setOnClickListener {
+        binding.iconCall.setOnClickListener {
             val emailData = EmailData(
                 email = mailUserIconCall,
                 subject = subjectIconCall,
@@ -46,13 +50,12 @@ class SettingsActivity : AppCompatActivity() {
             viewModel.openSupportEmail(emailData)
         }
 
-        val buttonIconArrow = findViewById<Button>(R.id.arrow)
-        buttonIconArrow.setOnClickListener {
+        binding.arrow.setOnClickListener {
             viewModel.openSupportLink(urlIconArrow)
         }
 
-        val themeSwitcher = findViewById<SwitchMaterial>(R.id.themeSwitcher)
-        viewModel.themeSettings.observe(this) { themeSettings ->
+        val themeSwitcher = binding.themeSwitcher
+        viewModel.themeSettings.observe(viewLifecycleOwner) { themeSettings ->
             themeSwitcher.isChecked = themeSettings.isDarkTheme
             updateTheme(themeSettings.isDarkTheme)
             applySwitchColors(themeSwitcher)
@@ -66,8 +69,8 @@ class SettingsActivity : AppCompatActivity() {
     private fun applySwitchColors(switcher: SwitchMaterial) {
         val thumbColor = if (switcher.isChecked) R.color.blue else R.color.icon_color2
         val trackColor = if (switcher.isChecked) R.color.trackTintNight else R.color.trackTint
-        switcher.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(this, thumbColor))
-        switcher.trackTintList = ColorStateList.valueOf(ContextCompat.getColor(this, trackColor))
+        switcher.thumbTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), thumbColor))
+        switcher.trackTintList = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), trackColor))
     }
 
     private fun updateTheme(isDarkTheme: Boolean) {
@@ -78,5 +81,10 @@ class SettingsActivity : AppCompatActivity() {
                 AppCompatDelegate.MODE_NIGHT_NO
             }
         )
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

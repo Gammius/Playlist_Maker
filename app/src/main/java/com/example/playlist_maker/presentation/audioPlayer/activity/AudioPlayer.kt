@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlist_maker.R
 import com.example.playlist_maker.Utils.dpToPx
-import com.example.playlist_maker.presentation.search.activity.SearchActivity.TrackHolder
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -24,12 +23,57 @@ class AudioPlayer : AppCompatActivity() {
     private lateinit var pause: ImageButton
     private lateinit var trackTimeDemo: TextView
 
-    private val track = TrackHolder.selectedTrack
+    private var trackName: String? = null
+    private var artistName: String? = null
+    private var trackTimeMillis: Long? = null
+    private var collectionName: String? = null
+    private var releaseDate: String? = null
+    private var primaryGenreName: String? = null
+    private var country: String? = null
+    private var previewUrl: String? = null
+    private var coverArtwork: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_audio_player)
+
+        intent?.let {
+            trackName = it.getStringExtra("track_name")
+            artistName = it.getStringExtra("artist_name")
+            trackTimeMillis = it.getLongExtra("track_time", 0L)
+            collectionName = it.getStringExtra("collection_name")
+            releaseDate = it.getStringExtra("release_date")
+            primaryGenreName = it.getStringExtra("primary_genre_name")
+            country = it.getStringExtra("country")
+            previewUrl = it.getStringExtra("preview_url")
+            coverArtwork = it.getStringExtra("cover_artwork")
+        }
+
+        val trackNameTextView: TextView = findViewById(R.id.track_name_ap)
+        val artistNameTextView: TextView = findViewById(R.id.artist_name_ap)
+        val trackTimeTextView: TextView = findViewById(R.id.track_time_ap)
+        val artworkImageView: ImageView = findViewById(R.id.cover_track)
+        val collectionNameView: TextView = findViewById(R.id.album_ap)
+        val releaseDateView: TextView = findViewById(R.id.year_ap)
+        val primaryGenreNameView: TextView = findViewById(R.id.genre_ap)
+        val countryView: TextView = findViewById(R.id.country_ap)
+
+        trackNameTextView.text = trackName ?: ""
+        artistNameTextView.text = artistName ?: ""
+        trackTimeTextView.text = formatTime(trackTimeMillis ?: 0L)
+        collectionNameView.text = collectionName ?: ""
+        releaseDateView.text = releaseDate ?: ""
+        primaryGenreNameView.text = primaryGenreName ?: ""
+        countryView.text = country ?: ""
+        artistNameTextView.requestLayout()
+        val cornerRadiusPx = dpToPx(8f, this)
+        Glide.with(this)
+            .load(coverArtwork)
+            .placeholder(R.drawable.place_holder_ap)
+            .centerCrop()
+            .transform(RoundedCorners(cornerRadiusPx))
+            .into(artworkImageView)
 
         val buttonBack = findViewById<Button>(R.id.arrow_back)
         buttonBack.setOnClickListener {
@@ -47,7 +91,7 @@ class AudioPlayer : AppCompatActivity() {
         trackTimeDemo = findViewById(R.id.track_time_demo)
 
 
-        audioPlayerViewModel.preparePlayer(track?.previewUrl ?: "")
+        audioPlayerViewModel.preparePlayer(previewUrl ?: "")
 
         play.setOnClickListener {
             audioPlayerViewModel.playbackControl()
@@ -56,31 +100,6 @@ class AudioPlayer : AppCompatActivity() {
         pause.setOnClickListener {
             audioPlayerViewModel.playbackControl()
         }
-
-        val trackNameTextView: TextView = findViewById(R.id.track_name_ap)
-        val artistNameTextView: TextView = findViewById(R.id.artist_name_ap)
-        val trackTimeTextView: TextView = findViewById(R.id.track_time_ap)
-        val artworkImageView: ImageView = findViewById(R.id.cover_track)
-        val collectionNameView: TextView = findViewById(R.id.album_ap)
-        val releaseDateView: TextView = findViewById(R.id.year_ap)
-        val primaryGenreNameView: TextView = findViewById(R.id.genre_ap)
-        val countryView: TextView = findViewById(R.id.country_ap)
-
-        trackNameTextView.text = track?.trackName ?: ""
-        artistNameTextView.text = track?.artistName ?: ""
-        trackTimeTextView.text = track?.getFormattedTrackTime(track.trackTimeMillis) ?: ""
-        collectionNameView.text = track?.collectionName ?: ""
-        releaseDateView.text = track?.getFormattedReleaseYear() ?: ""
-        primaryGenreNameView.text = track?.primaryGenreName ?: ""
-        countryView.text = track?.country ?: ""
-        artistNameTextView.requestLayout()
-        val cornerRadiusPx = dpToPx(8f, this)
-        Glide.with(this)
-            .load(track?.getCoverArtwork())
-            .placeholder(R.drawable.place_holder_ap)
-            .centerCrop()
-            .transform(RoundedCorners(cornerRadiusPx))
-            .into(artworkImageView)
     }
 
     private fun formatTime(time: Long): String {
@@ -88,6 +107,7 @@ class AudioPlayer : AppCompatActivity() {
         val seconds = (time / 1000) % 60
         return String.format("%02d:%02d", minutes, seconds)
     }
+
     override fun onPause() {
         super.onPause()
         audioPlayerViewModel.pausePlayer()

@@ -5,36 +5,30 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
 import android.widget.EditText
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.playlist_maker.R
+import com.example.playlist_maker.databinding.FragmentSearchBinding
 import com.example.playlist_maker.domain.search.model.Track
 import com.example.playlist_maker.presentation.audioPlayer.activity.AudioPlayer
 import com.example.playlist_maker.presentation.search.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SearchActivity : AppCompatActivity() {
+class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private val searchViewModel: SearchViewModel by viewModel()
-    private lateinit var searchEditText: EditText
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var progressBar: ProgressBar
+    private var _binding: FragmentSearchBinding? = null
+    private val binding get() = _binding!!
+
     private lateinit var trackAdapter: TrackAdapter
-    private lateinit var noResultsView: LinearLayout
-    private lateinit var noInternetView: LinearLayout
-    private lateinit var buttonUpdate: Button
-    private lateinit var searchHistoryContainer: LinearLayout
-    private lateinit var recyclerSearchHistory: RecyclerView
     private lateinit var searchHistoryAdapter: SearchHistoryAdapter
 
     companion object {
@@ -49,49 +43,42 @@ class SearchActivity : AppCompatActivity() {
     private var clickRunnable: Runnable? = null
     private var searchText: String = ""
 
-    object TrackHolder {
-        var selectedTrack: Track? = null
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-
-        setContentView(R.layout.activity_search)
-        searchEditText = findViewById(R.id.search_edit_text)
-        recyclerSearchHistory = findViewById(R.id.recycler_search_history)
-        recyclerSearchHistory.layoutManager = LinearLayoutManager(this)
+        binding.recyclerSearchHistory.layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         searchHistoryAdapter = SearchHistoryAdapter(emptyList()) { track ->
-            TrackHolder.selectedTrack = track
-            val intent = Intent(this, AudioPlayer::class.java)
+            val intent = createTrackIntent(track)
             startActivity(intent)
         }
 
-        recyclerSearchHistory.adapter = searchHistoryAdapter
-        progressBar = findViewById(R.id.progressBar)
-        noResultsView = findViewById(R.id.no_results)
-        noInternetView = findViewById(R.id.no_internet)
-        buttonUpdate = findViewById(R.id.button_update)
-        recyclerView = findViewById(R.id.recycler_view)
-        recyclerView.layoutManager = LinearLayoutManager(this)
+        binding.recyclerSearchHistory.adapter = searchHistoryAdapter
 
         trackAdapter = TrackAdapter(emptyList()) { track ->
             clickRunnable?.let { clickHandler.removeCallbacks(it) }
             clickRunnable = Runnable {
                 searchViewModel.addTrackToHistory(track)
-                TrackHolder.selectedTrack = track
-                val intent = Intent(this, AudioPlayer::class.java)
+                val intent = createTrackIntent(track)
                 startActivity(intent)
             }
             clickRunnable?.let { clickHandler.postDelayed(it, CLICK_DEBOUNCE_DELAY) }
         }
 
-        recyclerView.adapter = trackAdapter
+        binding.recyclerView.adapter = trackAdapter
 
-        searchHistoryContainer = findViewById(R.id.search_history_container)
-
-        val searchClearButton = findViewById<ImageView>(R.id.clear_button)
+        val searchClearButton = binding.clearButton
+        val buttonUpdate = binding.buttonUpdate
+        val searchEditText = binding.searchEditText
         if (savedInstanceState != null) {
             searchText = savedInstanceState.getString(KEY_SEARCH_TEXT, "")
             searchEditText.setText(searchText)
@@ -111,19 +98,19 @@ class SearchActivity : AppCompatActivity() {
 
         searchEditText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                closeKeyboard(this, searchEditText)
+                closeKeyboard(requireContext(), searchEditText)
                 true
             } else {
                 false
             }
         }
-        searchViewModel.screenState.observe(this) { state ->
+        searchViewModel.screenState.observe(viewLifecycleOwner) { state ->
             searchHistoryAdapter.updateTracks(state.historyList)
             trackAdapter.updateTracks(state.trackList)
-            progressBar.isVisible = state.isLoading
-            noResultsView.isVisible = state.noResults
-            noInternetView.isVisible = state.noInternet
-            recyclerView.isVisible = !state.noInternet
+            binding.progressBar.isVisible = state.isLoading
+            binding.noResults.isVisible = state.noResults
+            binding.noInternet.isVisible = state.noInternet
+            binding.recyclerView.isVisible = !state.noInternet
             buttonUpdate.isVisible = state.noInternet
             if (state.searchText != searchText) {
                 searchText = state.searchText
@@ -131,7 +118,7 @@ class SearchActivity : AppCompatActivity() {
                     searchEditText.setText(searchText)
                 }
             }
-            searchHistoryContainer.isVisible =
+            binding.searchHistoryContainer.isVisible =
                 state.searchHistoryVisible && state.isSearchFocused && state.searchText.isEmpty() && state.historyList.isNotEmpty()
         }
 
@@ -139,14 +126,8 @@ class SearchActivity : AppCompatActivity() {
             searchViewModel.clearSearch()
         }
 
-        val clearSearchHistoryButton = findViewById<Button>(R.id.clear_history_button)
-        clearSearchHistoryButton.setOnClickListener {
+        binding.clearHistoryButton.setOnClickListener {
             searchViewModel.clearHistory()
-        }
-
-        val buttonBackSettings = findViewById<Button>(R.id.arrow_back)
-        buttonBackSettings.setOnClickListener {
-            onBackPressed()
         }
 
         searchEditText.setOnFocusChangeListener { _, hasFocus ->
@@ -163,17 +144,33 @@ class SearchActivity : AppCompatActivity() {
         searchHandler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
     }
 
+    private fun createTrackIntent(track: Track) : Intent {
+        return Intent(requireContext(), AudioPlayer::class.java).apply {
+            putExtra("track_name", track.trackName)
+            putExtra("artist_name", track.artistName)
+            putExtra("track_time", track.trackTimeMillis)
+            putExtra("collection_name", track.collectionName)
+            putExtra("release_date", track.getFormattedReleaseYear(track.releaseDate))
+            putExtra("primary_genre_name", track.primaryGenreName)
+            putExtra("country", track.country)
+            putExtra("preview_url", track.previewUrl)
+            putExtra("cover_artwork", track.getCoverArtwork())
+        }
+    }
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putString(KEY_SEARCH_TEXT, searchText)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
-        super.onRestoreInstanceState(savedInstanceState)
-        searchText = savedInstanceState.getString(KEY_SEARCH_TEXT, "")
-        if (searchEditText.text.toString() != searchText) {
-            searchEditText.setText(searchText)
-            searchViewModel.updateSearchText(searchText)
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        savedInstanceState?.let {
+            searchText = it.getString(KEY_SEARCH_TEXT, "")
+            if (binding.searchEditText.text.toString() != searchText) {
+                binding.searchEditText.setText(searchText)
+                searchViewModel.updateSearchText(searchText)
+            }
         }
     }
 
@@ -181,5 +178,10 @@ class SearchActivity : AppCompatActivity() {
         val closeKeyboard =
             context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         closeKeyboard.hideSoftInputFromWindow(searchEditText.windowToken, 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

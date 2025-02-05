@@ -1,42 +1,47 @@
 package com.example.playlist_maker.presentation.mediaLibrary.activity
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.example.playlist_maker.R
-import com.example.playlist_maker.databinding.ActivityMediaLibraryBinding
+import com.example.playlist_maker.databinding.FragmentMediaLibraryBinding
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.MediaLibraryViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MediaLibraryActivity : AppCompatActivity() {
+class MediaLibraryFragment : Fragment(R.layout.fragment_media_library) {
 
     private val mediaLibraryViewModel: MediaLibraryViewModel by viewModel()
-    private lateinit var binding: ActivityMediaLibraryBinding
-    private lateinit var tabMediator: TabLayoutMediator
+    private var _binding: FragmentMediaLibraryBinding? = null
+    private val binding get() = _binding!!
+    private var tabMediator: TabLayoutMediator? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentMediaLibraryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        binding = ActivityMediaLibraryBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val tabTitles = listOf(getString(
             R.string.tab_favorites),
             getString(R.string.tab_playlists)
         )
 
-        binding.arrowBack.setOnClickListener {
-            onBackPressed()
-        }
-
         binding.viewPagerML.adapter = MediaLibraryAdapter(this)
 
         tabMediator = TabLayoutMediator(binding.tabLayoutML, binding.viewPagerML) { tab, position ->
                 tab.text = tabTitles[position]
         }
-        tabMediator.attach()
+        tabMediator?.attach()
 
-        mediaLibraryViewModel.mediaLibrary.observe(this) { mediaLibrary ->
+        mediaLibraryViewModel.mediaLibrary.observe(viewLifecycleOwner) { mediaLibrary ->
             binding.viewPagerML.setCurrentItem(mediaLibrary.selectedTabIndex, false)
             binding.tabLayoutML.getTabAt(mediaLibrary.selectedTabIndex)?.select()
         }
@@ -44,6 +49,6 @@ class MediaLibraryActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        tabMediator.detach()
+        tabMediator?.detach()
     }
 }
