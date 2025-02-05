@@ -3,8 +3,6 @@ package com.example.playlist_maker.presentation.search.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,12 +12,18 @@ import android.widget.EditText
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlist_maker.R
 import com.example.playlist_maker.databinding.FragmentSearchBinding
 import com.example.playlist_maker.domain.search.model.Track
 import com.example.playlist_maker.presentation.audioPlayer.activity.AudioPlayer
 import com.example.playlist_maker.presentation.search.view_model.SearchViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SearchFragment : Fragment(R.layout.fragment_search) {
@@ -37,10 +41,8 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         private const val CLICK_DEBOUNCE_DELAY = 500L
     }
 
-    private val searchHandler = Handler(Looper.getMainLooper())
-    private val searchRunnable = Runnable { searchViewModel.search(searchText) }
-    private val clickHandler = Handler(Looper.getMainLooper())
-    private var clickRunnable: Runnable? = null
+    private var searchJob: Job? = null
+    private var clickJob: Job? = null
     private var searchText: String = ""
 
     override fun onCreateView(
@@ -65,13 +67,13 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.recyclerSearchHistory.adapter = searchHistoryAdapter
 
         trackAdapter = TrackAdapter(emptyList()) { track ->
-            clickRunnable?.let { clickHandler.removeCallbacks(it) }
-            clickRunnable = Runnable {
+            clickJob?.cancel()
+            clickJob = lifecycleScope.launch {
+                delay(CLICK_DEBOUNCE_DELAY)
                 searchViewModel.addTrackToHistory(track)
                 val intent = createTrackIntent(track)
                 startActivity(intent)
             }
-            clickRunnable?.let { clickHandler.postDelayed(it, CLICK_DEBOUNCE_DELAY) }
         }
 
         binding.recyclerView.adapter = trackAdapter
@@ -104,22 +106,27 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
                 false
             }
         }
-        searchViewModel.screenState.observe(viewLifecycleOwner) { state ->
-            searchHistoryAdapter.updateTracks(state.historyList)
-            trackAdapter.updateTracks(state.trackList)
-            binding.progressBar.isVisible = state.isLoading
-            binding.noResults.isVisible = state.noResults
-            binding.noInternet.isVisible = state.noInternet
-            binding.recyclerView.isVisible = !state.noInternet
-            buttonUpdate.isVisible = state.noInternet
-            if (state.searchText != searchText) {
-                searchText = state.searchText
-                if (searchEditText.text.toString() != state.searchText) {
-                    searchEditText.setText(searchText)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                searchViewModel.screenState.collect { state ->
+                    searchHistoryAdapter.updateTracks(state.historyList)
+                    trackAdapter.updateTracks(state.trackList)
+                    binding.progressBar.isVisible = state.isLoading
+                    binding.noResults.isVisible = state.noResults
+                    binding.noInternet.isVisible = state.noInternet
+                    binding.recyclerView.isVisible = !state.noInternet
+                    buttonUpdate.isVisible = state.noInternet
+                    if (state.searchText != searchText) {
+                        searchText = state.searchText
+                        if (searchEditText.text.toString() != state.searchText) {
+                            searchEditText.setText(searchText)
+                        }
+                    }
+                    binding.searchHistoryContainer.isVisible =
+                        state.searchHistoryVisible && state.isSearchFocused && state.searchText.isEmpty() && state.historyList.isNotEmpty()
                 }
             }
-            binding.searchHistoryContainer.isVisible =
-                state.searchHistoryVisible && state.isSearchFocused && state.searchText.isEmpty() && state.historyList.isNotEmpty()
         }
 
         searchClearButton.setOnClickListener {
@@ -140,11 +147,14 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun searchDebounce() {
-        searchHandler.removeCallbacks(searchRunnable)
-        searchHandler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+        searchJob?.cancel()
+        searchJob = lifecycleScope.launch {
+            delay(SEARCH_DEBOUNCE_DELAY)
+            searchViewModel.search(searchText)
+        }
     }
 
-    private fun createTrackIntent(track: Track) : Intent {
+    private fun createTrackIntent(track: Track): Intent {
         return Intent(requireContext(), AudioPlayer::class.java).apply {
             putExtra("track_name", track.trackName)
             putExtra("artist_name", track.artistName)
