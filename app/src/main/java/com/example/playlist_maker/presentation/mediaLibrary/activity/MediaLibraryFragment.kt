@@ -18,12 +18,6 @@ class MediaLibraryFragment : Fragment(R.layout.fragment_media_library) {
     private val binding get() = _binding!!
     private var tabMediator: TabLayoutMediator? = null
 
-    companion object {
-        fun newInstance(): MediaLibraryFragment {
-            return MediaLibraryFragment()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

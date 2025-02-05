@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.playlist_maker.R
 import com.example.playlist_maker.databinding.FragmentSearchBinding
+import com.example.playlist_maker.domain.search.model.Track
 import com.example.playlist_maker.presentation.audioPlayer.activity.AudioPlayer
 import com.example.playlist_maker.presentation.search.view_model.SearchViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -34,10 +35,6 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         private const val SEARCH_DEBOUNCE_DELAY = 2000L
         private const val KEY_SEARCH_TEXT = "searchText"
         private const val CLICK_DEBOUNCE_DELAY = 500L
-
-        fun newInstance(): SearchFragment {
-            return SearchFragment()
-        }
     }
 
     private val searchHandler = Handler(Looper.getMainLooper())
@@ -61,17 +58,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         searchHistoryAdapter = SearchHistoryAdapter(emptyList()) { track ->
-            val intent = Intent(requireContext(), AudioPlayer::class.java).apply {
-                putExtra("track_name", track.trackName)
-                putExtra("artist_name", track.artistName)
-                putExtra("track_time", track.trackTimeMillis)
-                putExtra("collection_name", track.collectionName)
-                putExtra("release_date", track.getFormattedReleaseYear(track.releaseDate))
-                putExtra("primary_genre_name", track.primaryGenreName)
-                putExtra("country", track.country)
-                putExtra("preview_url", track.previewUrl)
-                putExtra("cover_artwork", track.getCoverArtwork())
-            }
+            val intent = createTrackIntent(track)
             startActivity(intent)
         }
 
@@ -81,17 +68,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             clickRunnable?.let { clickHandler.removeCallbacks(it) }
             clickRunnable = Runnable {
                 searchViewModel.addTrackToHistory(track)
-                val intent = Intent(requireContext(), AudioPlayer::class.java).apply {
-                    putExtra("track_name", track.trackName)
-                    putExtra("artist_name", track.artistName)
-                    putExtra("track_time", track.trackTimeMillis)
-                    putExtra("collection_name", track.collectionName)
-                    putExtra("release_date", track.getFormattedReleaseYear(track.releaseDate))
-                    putExtra("primary_genre_name", track.primaryGenreName)
-                    putExtra("country", track.country)
-                    putExtra("preview_url", track.previewUrl)
-                    putExtra("cover_artwork", track.getCoverArtwork())
-                }
+                val intent = createTrackIntent(track)
                 startActivity(intent)
             }
             clickRunnable?.let { clickHandler.postDelayed(it, CLICK_DEBOUNCE_DELAY) }
@@ -165,6 +142,20 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun searchDebounce() {
         searchHandler.removeCallbacks(searchRunnable)
         searchHandler.postDelayed(searchRunnable, SEARCH_DEBOUNCE_DELAY)
+    }
+
+    private fun createTrackIntent(track: Track) : Intent {
+        return Intent(requireContext(), AudioPlayer::class.java).apply {
+            putExtra("track_name", track.trackName)
+            putExtra("artist_name", track.artistName)
+            putExtra("track_time", track.trackTimeMillis)
+            putExtra("collection_name", track.collectionName)
+            putExtra("release_date", track.getFormattedReleaseYear(track.releaseDate))
+            putExtra("primary_genre_name", track.primaryGenreName)
+            putExtra("country", track.country)
+            putExtra("preview_url", track.previewUrl)
+            putExtra("cover_artwork", track.getCoverArtwork())
+        }
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

@@ -20,12 +20,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
 
-    companion object {
-        fun newInstance(): SettingsFragment {
-            return SettingsFragment()
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
