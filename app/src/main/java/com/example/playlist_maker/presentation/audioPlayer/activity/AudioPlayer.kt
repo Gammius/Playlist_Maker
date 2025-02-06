@@ -8,10 +8,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlist_maker.R
 import com.example.playlist_maker.Utils.dpToPx
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -80,10 +84,14 @@ class AudioPlayer : AppCompatActivity() {
             onBackPressed()
         }
 
-        audioPlayerViewModel.audioPlayerState.observe(this) { state ->
-            play.isVisible = state.playButtonVisible
-            pause.isVisible = state.pauseButtonVisible
-            trackTimeDemo.text = formatTime(state.currentTime)
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                audioPlayerViewModel.audioPlayerState.collect { state ->
+                    play.isVisible = state.playButtonVisible
+                    pause.isVisible = state.pauseButtonVisible
+                    trackTimeDemo.text = formatTime(state.currentTime)
+                }
+            }
         }
 
         play = findViewById(R.id.play_track_btn)

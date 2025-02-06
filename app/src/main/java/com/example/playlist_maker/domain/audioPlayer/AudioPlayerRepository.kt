@@ -1,9 +1,12 @@
 package com.example.playlist_maker.domain.audioPlayer
 
+import com.example.playlist_maker.domain.audioPlayer.model.AudioPlayerEvent
+import kotlinx.coroutines.flow.Flow
+
 interface AudioPlayerRepository {
-    fun preparePlayer(previewUrl: String, onPrepared: () -> Unit, onCompletion: () -> Unit)
-    fun startPlayer()
-    fun pausePlayer()
-    fun resetPlayer()
+    suspend fun preparePlayer(previewUrl: String): Flow<AudioPlayerEvent>
+    suspend fun startPlayer(): Flow<AudioPlayerEvent>
+    suspend fun pausePlayer(): Flow<AudioPlayerEvent>
+    suspend fun resetPlayer(): Flow<AudioPlayerEvent>
     fun getCurrentPosition(): Int
 }

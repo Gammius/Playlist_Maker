@@ -2,28 +2,30 @@ package com.example.playlist_maker.domain.audioPlayer.impl
 
 import com.example.playlist_maker.domain.audioPlayer.AudioPlayerRepository
 import com.example.playlist_maker.domain.audioPlayer.AudioPlayerInteractor
+import com.example.playlist_maker.domain.audioPlayer.model.AudioPlayerEvent
+import kotlinx.coroutines.flow.Flow
 
 class AudioPlayerInteractorImpl (
     private val repository: AudioPlayerRepository
 ) : AudioPlayerInteractor {
 
-    override fun preparePlayer(previewUrl: String, onPrepared: () -> Unit, onCompletion: () -> Unit) {
-        repository.preparePlayer(previewUrl,onPrepared,onCompletion)
+    override suspend fun preparePlayer(previewUrl: String) : Flow<AudioPlayerEvent> {
+        return repository.preparePlayer(previewUrl)
     }
 
-    override fun startPlayer() {
-        repository.startPlayer()
+    override suspend fun startPlayer(): Flow<AudioPlayerEvent> {
+        return repository.startPlayer()
     }
 
-    override fun pausePlayer() {
-        repository.pausePlayer()
+    override suspend fun pausePlayer(): Flow<AudioPlayerEvent> {
+        return repository.pausePlayer()
     }
 
-    override fun resetPlayer() {
-        repository.resetPlayer()
+    override suspend fun resetPlayer(): Flow<AudioPlayerEvent> {
+        return repository.resetPlayer()
     }
 
-    override fun getCurrentPosition(): Int {
+    override suspend fun getCurrentPosition(): Int {
        return repository.getCurrentPosition()
     }
 }
