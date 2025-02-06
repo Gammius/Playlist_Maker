@@ -25,19 +25,19 @@ class AudioPlayerRepositoryImpl (
             trySend(AudioPlayerEvent.Completed)
         }
 
-        awaitClose { mediaPlayer.release() }
+        awaitClose {  }
     }
 
     override suspend fun startPlayer(): Flow<AudioPlayerEvent> = callbackFlow {
         mediaPlayer.start()
         trySend(AudioPlayerEvent.Started)
-        awaitClose { mediaPlayer.release() }
+        awaitClose {  }
     }
 
     override suspend fun pausePlayer(): Flow<AudioPlayerEvent> = callbackFlow {
         mediaPlayer.pause()
         trySend(AudioPlayerEvent.Paused)
-        awaitClose { mediaPlayer.release() }
+        awaitClose {  }
     }
 
     override suspend fun resetPlayer(): Flow<AudioPlayerEvent> = callbackFlow {

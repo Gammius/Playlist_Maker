@@ -122,7 +122,7 @@ class AudioPlayer : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         audioPlayerViewModel.resetPlayer()
+        super.onDestroy()
     }
 }
