@@ -3,25 +3,22 @@ package com.example.playlist_maker.data.search.network
 import com.example.playlist_maker.data.search.NetworkClient
 import com.example.playlist_maker.data.search.dto.TrackRequest
 import com.example.playlist_maker.data.search.dto.TrackResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
-class RetrofitNetworkClient(private val trackService: TrackApi) : NetworkClient  {
-    override fun doRequest(dto: Any, callback: (TrackResponse) -> Unit) {
+class RetrofitNetworkClient(private val trackService: TrackApi) : NetworkClient {
+
+    override suspend fun doRequest(dto: Any): Flow<TrackResponse> = flow {
         if (dto is TrackRequest) {
-            trackService.search(dto.query).enqueue(object : Callback<TrackResponse> {
-                override fun onResponse(call: Call<TrackResponse>, response: Response<TrackResponse>) {
-                    val body = response.body() ?: TrackResponse()
-                    val result = body.apply { resultCode = response.code() }
-                    callback(result)
-                }
+            try {
+                val response = trackService.search(dto.query)
+                val trackResponse = response.copy(resultCode = 200)
+                emit(trackResponse)
 
-                override fun onFailure(call: Call<TrackResponse>, t: Throwable) {
-                    val errorResponse = TrackResponse().apply { resultCode = 400 }
-                    callback(errorResponse)
-                }
-            })
+            } catch (e: Throwable) {
+                val errorResponse = TrackResponse(resultCode = 400)
+                emit(errorResponse)
+            }
         }
     }
 }
