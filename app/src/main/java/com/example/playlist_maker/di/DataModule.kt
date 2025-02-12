@@ -2,6 +2,8 @@ package com.example.playlist_maker.di
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.room.Room
+import com.example.playlist_maker.data.db.TrackDatabase
 import com.example.playlist_maker.data.search.NetworkClient
 import com.example.playlist_maker.data.search.network.RetrofitNetworkClient
 import com.example.playlist_maker.data.search.network.TrackApi
@@ -29,5 +31,10 @@ val dataModule = module {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(TrackApi::class.java)
+    }
+
+    single {
+        Room.databaseBuilder(androidContext(), TrackDatabase::class.java, "track_favorite_database")
+            .build()
     }
 }

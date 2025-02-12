@@ -7,7 +7,9 @@ import com.example.playlist_maker.domain.search.model.Track
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class TrackRepositoryImpl(private val networkClient: NetworkClient) : TrackRepository {
+class TrackRepositoryImpl(
+    private val networkClient: NetworkClient,
+) : TrackRepository {
 
     override suspend fun search(query: String): Flow<List<Track>?> {
         return networkClient.doRequest(TrackRequest(query))

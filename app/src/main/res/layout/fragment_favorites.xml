@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/no_media"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="106dp"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <ImageView
             style="@style/image_no_results"
@@ -19,10 +19,17 @@
 
         <TextView
             style="@style/text_history"
-            android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/no_media" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_favorite"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
 </LinearLayout>

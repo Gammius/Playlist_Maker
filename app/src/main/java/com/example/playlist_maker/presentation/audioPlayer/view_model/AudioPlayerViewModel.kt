@@ -1,16 +1,21 @@
 package com.example.playlist_maker.presentation.audioPlayer.view_model
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlist_maker.domain.audioPlayer.AudioPlayerInteractor
 import com.example.playlist_maker.domain.audioPlayer.model.AudioPlayerEvent
+import com.example.playlist_maker.domain.favoriteTrack.FavoriteTrackInteractor
+import com.example.playlist_maker.domain.search.model.Track
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
-    private val audioPlayerInteractor: AudioPlayerInteractor
+    private val audioPlayerInteractor: AudioPlayerInteractor,
+    private val favoriteTrackInteractor: FavoriteTrackInteractor
 ) : ViewModel() {
 
     companion object {
@@ -23,8 +28,30 @@ class AudioPlayerViewModel(
     private val _audioPlayerState = MutableStateFlow(AudioPlayerState())
     val audioPlayerState: StateFlow<AudioPlayerState> get() = _audioPlayerState
 
+    private val _isFavorite = MutableLiveData<Boolean>()
+    val isFavorite: LiveData<Boolean> get() = _isFavorite
+
     init {
         _audioPlayerState.value = AudioPlayerState()
+    }
+
+    fun onFavoriteClicked(track: Track) {
+        viewModelScope.launch {
+            if (track.isFavorite) {
+                favoriteTrackInteractor.removeTrackFromFavorite(track)
+            } else {
+                favoriteTrackInteractor.addTrackToFavorite(track)
+            }
+            track.isFavorite = !track.isFavorite
+            _isFavorite.postValue(track.isFavorite)
+        }
+    }
+
+    fun checkIfTrackIsFavorite(trackId: Long) {
+        viewModelScope.launch {
+            val isFavorite = favoriteTrackInteractor.getTrackFavoriteIds(trackId)
+            _isFavorite.postValue(isFavorite)
+        }
     }
 
     fun preparePlayer(previewUrl: String) {
@@ -38,6 +65,7 @@ class AudioPlayerViewModel(
                             pauseButtonVisible = false
                         )
                     }
+
                     is AudioPlayerEvent.Completed -> {
                         _audioPlayerState.value = _audioPlayerState.value.copy(
                             playerState = STATE_PREPARED,
@@ -46,6 +74,7 @@ class AudioPlayerViewModel(
                             pauseButtonVisible = false
                         )
                     }
+
                     else -> {}
                 }
             }
@@ -55,15 +84,16 @@ class AudioPlayerViewModel(
     fun startPlayer() {
         viewModelScope.launch {
             audioPlayerInteractor.startPlayer().collect { event ->
-                when(event) {
+                when (event) {
                     is AudioPlayerEvent.Started -> {
                         _audioPlayerState.value = _audioPlayerState.value.copy(
                             playerState = STATE_PLAYING,
                             playButtonVisible = false,
                             pauseButtonVisible = true
                         )
-                            startTimer()
+                        startTimer()
                     }
+
                     else -> {}
                 }
             }
@@ -73,7 +103,7 @@ class AudioPlayerViewModel(
     fun pausePlayer() {
         viewModelScope.launch {
             audioPlayerInteractor.pausePlayer().collect { event ->
-                when(event) {
+                when (event) {
                     is AudioPlayerEvent.Paused -> {
                         _audioPlayerState.value = _audioPlayerState.value.copy(
                             playerState = STATE_PAUSED,
@@ -81,6 +111,7 @@ class AudioPlayerViewModel(
                             pauseButtonVisible = false
                         )
                     }
+
                     else -> {}
                 }
             }
@@ -90,7 +121,7 @@ class AudioPlayerViewModel(
     fun resetPlayer() {
         viewModelScope.launch {
             audioPlayerInteractor.resetPlayer().collect { event ->
-                when(event) {
+                when (event) {
                     is AudioPlayerEvent.Reset -> {
                         _audioPlayerState.value = _audioPlayerState.value.copy(
                             playerState = STATE_DEFAULT,
@@ -99,6 +130,7 @@ class AudioPlayerViewModel(
                             pauseButtonVisible = false
                         )
                     }
+
                     else -> {}
                 }
             }
@@ -110,6 +142,7 @@ class AudioPlayerViewModel(
             STATE_PLAYING -> {
                 pausePlayer()
             }
+
             STATE_PREPARED, STATE_PAUSED -> {
                 startPlayer()
             }

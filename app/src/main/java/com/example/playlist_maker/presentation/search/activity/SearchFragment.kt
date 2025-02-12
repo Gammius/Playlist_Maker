@@ -156,6 +156,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun createTrackIntent(track: Track): Intent {
         return Intent(requireContext(), AudioPlayer::class.java).apply {
+            putExtra("track_id", track.trackId)
             putExtra("track_name", track.trackName)
             putExtra("artist_name", track.artistName)
             putExtra("track_time", track.trackTimeMillis)
@@ -165,6 +166,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
             putExtra("country", track.country)
             putExtra("preview_url", track.previewUrl)
             putExtra("cover_artwork", track.getCoverArtwork())
+            putExtra("is_favorite", track.isFavorite)
         }
     }
 

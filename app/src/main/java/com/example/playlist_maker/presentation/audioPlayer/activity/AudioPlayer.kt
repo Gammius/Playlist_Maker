@@ -1,7 +1,9 @@
 package com.example.playlist_maker.presentation.audioPlayer.activity
 
+import android.content.res.Configuration
 import com.example.playlist_maker.presentation.audioPlayer.view_model.AudioPlayerViewModel
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.example.playlist_maker.R
 import com.example.playlist_maker.Utils.dpToPx
+import com.example.playlist_maker.domain.search.model.Track
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -26,7 +29,9 @@ class AudioPlayer : AppCompatActivity() {
     private lateinit var play: ImageButton
     private lateinit var pause: ImageButton
     private lateinit var trackTimeDemo: TextView
+    private lateinit var isFavoriteButton: ImageButton
 
+    private var trackId: Long? = null
     private var trackName: String? = null
     private var artistName: String? = null
     private var trackTimeMillis: Long? = null
@@ -36,6 +41,7 @@ class AudioPlayer : AppCompatActivity() {
     private var country: String? = null
     private var previewUrl: String? = null
     private var coverArtwork: String? = null
+    private var isFavorite: Boolean? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +49,7 @@ class AudioPlayer : AppCompatActivity() {
         setContentView(R.layout.activity_audio_player)
 
         intent?.let {
+            trackId = it.getLongExtra("track_id", 0L)
             trackName = it.getStringExtra("track_name")
             artistName = it.getStringExtra("artist_name")
             trackTimeMillis = it.getLongExtra("track_time", 0L)
@@ -52,7 +59,22 @@ class AudioPlayer : AppCompatActivity() {
             country = it.getStringExtra("country")
             previewUrl = it.getStringExtra("preview_url")
             coverArtwork = it.getStringExtra("cover_artwork")
+            isFavorite = it.getBooleanExtra("is_favorite", false)
         }
+
+        val track = Track(
+            trackId = trackId ?: 0L,
+            trackName = trackName ?: "",
+            artistName = artistName ?: "",
+            trackTimeMillis = trackTimeMillis ?: 0L,
+            artworkUrl100 = coverArtwork ?: "",
+            collectionName = collectionName ?: "",
+            releaseDate = releaseDate ?: "",
+            primaryGenreName = primaryGenreName ?: "",
+            country = country ?: "",
+            previewUrl = previewUrl ?: "",
+            isFavorite = isFavorite ?: false
+        )
 
         val trackNameTextView: TextView = findViewById(R.id.track_name_ap)
         val artistNameTextView: TextView = findViewById(R.id.artist_name_ap)
@@ -97,7 +119,7 @@ class AudioPlayer : AppCompatActivity() {
         play = findViewById(R.id.play_track_btn)
         pause = findViewById(R.id.pause_track_btn)
         trackTimeDemo = findViewById(R.id.track_time_demo)
-
+        isFavoriteButton = findViewById(R.id.like_track_btn)
 
         audioPlayerViewModel.preparePlayer(previewUrl ?: "")
 
@@ -107,6 +129,22 @@ class AudioPlayer : AppCompatActivity() {
 
         pause.setOnClickListener {
             audioPlayerViewModel.playbackControl()
+        }
+
+        audioPlayerViewModel.checkIfTrackIsFavorite(trackId ?: 0L)
+
+        val isDarkTheme = isDarkTheme()
+        audioPlayerViewModel.isFavorite.observe(this) { isFavorite ->
+            val iconRes = if (isDarkTheme) {
+                if (isFavorite) R.drawable.like_on_night else R.drawable.like_night
+            } else {
+                if (isFavorite) R.drawable.like_on else R.drawable.like
+            }
+            isFavoriteButton.setImageResource(iconRes)
+        }
+
+        isFavoriteButton.setOnClickListener {
+            audioPlayerViewModel.onFavoriteClicked(track)
         }
     }
 
@@ -124,5 +162,9 @@ class AudioPlayer : AppCompatActivity() {
     override fun onDestroy() {
         audioPlayerViewModel.resetPlayer()
         super.onDestroy()
+    }
+
+    private fun isDarkTheme(): Boolean {
+        return (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
     }
 }
