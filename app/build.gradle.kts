@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    kotlin("kapt")
 }
 
 android {
@@ -54,7 +55,6 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
-    implementation(libs.kotlinx.coroutines.android)
     implementation(libs.insert.koin.koin.android)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.androidx.viewpager2)
@@ -62,6 +62,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.jetbrains.kotlinx.coroutines.android)
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

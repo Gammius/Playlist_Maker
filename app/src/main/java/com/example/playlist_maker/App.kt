@@ -12,7 +12,6 @@ import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
-
 class App : Application() {
     override fun onCreate() {
         super.onCreate()
