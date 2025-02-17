@@ -1,7 +1,6 @@
 package com.example.playlist_maker.domain.search.model
 
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 
 data class Track(
@@ -11,18 +10,27 @@ data class Track(
     val trackTimeMillis: Long,
     val artworkUrl100: String,
     val collectionName: String,
-    val releaseDate: Date?,
+    val releaseDate: String,
     val primaryGenreName: String,
     val country: String,
-    val previewUrl: String
+    val previewUrl: String,
+    var isFavorite: Boolean = false
 ) {
+
     fun getFormattedTrackTime(milliseconds: Long): String {
         return SimpleDateFormat("mm:ss", Locale.getDefault()).format(milliseconds)
     }
 
-    fun getFormattedReleaseYear(releaseDate: Date?): String {
-        return if (releaseDate != null) {
-            SimpleDateFormat("yyyy", Locale.getDefault()).format(releaseDate)
+    fun getFormattedReleaseYear(releaseDate: String?): String {
+        return if (releaseDate != null && releaseDate.isNotEmpty()) {
+            try {
+                val date = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).parse(releaseDate)
+                date?.let {
+                    SimpleDateFormat("yyyy", Locale.getDefault()).format(it)
+                } ?: ""
+            } catch (e: Exception) {
+                ""
+            }
         } else {
             ""
         }

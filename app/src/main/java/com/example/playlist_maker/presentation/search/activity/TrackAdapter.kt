@@ -33,7 +33,6 @@ class TrackAdapter(
 
     fun updateTracks(newTrackList: List<Track>) {
         trackList = newTrackList
-        trackList = newTrackList
         notifyDataSetChanged()
     }
 }
