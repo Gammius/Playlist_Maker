@@ -15,4 +15,8 @@ class MediaLibraryViewModel : ViewModel() {
             selectedTabIndex = 0
         )
     }
+
+    fun selectedTabIndex(index: Int) {
+        _mediaLibrary.value = _mediaLibrary.value?.copy(selectedTabIndex = index)
+    }
 }

@@ -2,10 +2,15 @@ package com.example.playlist_maker.di
 
 import android.media.MediaPlayer
 import com.example.playlist_maker.data.audioPlayer.impl.AudioPlayerRepositoryImpl
+import com.example.playlist_maker.data.converters.PlaylistDbConvertor
 import com.example.playlist_maker.data.converters.TrackDbConvertor
+import com.example.playlist_maker.data.converters.TrackPlaylistDbConvertor
 import com.example.playlist_maker.data.db.TrackDatabase
+import com.example.playlist_maker.data.db.dao.PlaylistDao
 import com.example.playlist_maker.data.db.dao.TrackDao
+import com.example.playlist_maker.data.db.dao.TrackPlaylistDao
 import com.example.playlist_maker.data.favoriteTrack.impl.FavoriteTrackRepositoryImpl
+import com.example.playlist_maker.data.playlist.impl.PlaylistRepositoryImpl
 import com.example.playlist_maker.data.search.impl.TrackRepositoryImpl
 import com.example.playlist_maker.data.searchHistory.impl.SearchHistoryRepositoryImpl
 import com.example.playlist_maker.data.settings.impl.APP_PREFERENCES
@@ -13,6 +18,7 @@ import com.example.playlist_maker.data.settings.impl.SettingsRepositoryImpl
 import com.example.playlist_maker.data.sharing.impl.ExternalNavigatorImpl
 import com.example.playlist_maker.domain.audioPlayer.AudioPlayerRepository
 import com.example.playlist_maker.domain.favoriteTrack.FavoriteTrackRepository
+import com.example.playlist_maker.domain.playlist.PlaylistRepository
 import com.example.playlist_maker.domain.search.TrackRepository
 import com.example.playlist_maker.domain.searchHistory.SearchHistoryRepository
 import com.example.playlist_maker.domain.settings.SettingsRepository
@@ -56,5 +62,25 @@ val repositoryModule = module {
 
     single {
         TrackDbConvertor()
+    }
+
+    single<PlaylistRepository> {
+        PlaylistRepositoryImpl(get(), get(), get(), get(), get())
+    }
+
+    single<PlaylistDao> {
+        get<TrackDatabase>().playlistDao()
+    }
+
+    single {
+        PlaylistDbConvertor()
+    }
+
+    single<TrackPlaylistDao> {
+        get<TrackDatabase>().trackPlaylistDao()
+    }
+
+    single {
+        TrackPlaylistDbConvertor()
     }
 }
