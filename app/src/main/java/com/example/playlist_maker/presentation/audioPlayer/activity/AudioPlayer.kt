@@ -171,7 +171,7 @@ class AudioPlayer : AppCompatActivity() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-
+                        audioPlayerViewModel.loadPlaylist()
                     }
 
                     BottomSheetBehavior.STATE_COLLAPSED -> {
@@ -215,14 +215,15 @@ class AudioPlayer : AppCompatActivity() {
             track?.let { track ->
                 val trackIds = playlist.trackIds
                 val trackCount = playlist.trackCount
-                val message = if (trackIds.contains(track.trackId)) {
-                    "Трек уже добавлен в плейлист ${playlist.namePlaylist}"
+                val message: String
+                if (trackIds.contains(track.trackId)) {
+                    message = "Трек уже добавлен в плейлист ${playlist.namePlaylist}"
                 } else {
-                    "Добавлено в плейлист ${playlist.namePlaylist}"
+                    message = "Добавлено в плейлист ${playlist.namePlaylist}"
+                    bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
                 }
                 audioPlayerViewModel.updateTrackPlaylist(playlist.id, trackIds, trackCount, track)
                 Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
-                bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
             }
         }
 

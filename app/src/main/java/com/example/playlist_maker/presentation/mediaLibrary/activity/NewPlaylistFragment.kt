@@ -76,21 +76,12 @@ class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
             newPlaylistViewModel.onPlaylistDescriptionChanged(descriptionPlaylist)
         }
 
-        val inflater = layoutInflater
-        val layout = inflater.inflate(R.layout.custom_toast, null)
-        val text = layout.findViewById<TextView>(R.id.toast_text)
-
-
         binding.createButton.setOnClickListener {
             val namePlaylist = newPlaylistViewModel.newPlaylistState.value?.namePlaylist.orEmpty()
             newPlaylistViewModel.createNewPlaylist()
             requireActivity().supportFragmentManager.popBackStack()
-            text.text = "Плейлист ${namePlaylist} создан"
-            val toast = Toast(requireContext())
-            toast.duration = Toast.LENGTH_LONG
-            toast.view = layout
-            toast.show()
-
+            Toast.makeText(requireContext(), "Плейлист ${namePlaylist} создан", Toast.LENGTH_LONG)
+                .show()
         }
 
         binding.placeForCover.setOnClickListener {
