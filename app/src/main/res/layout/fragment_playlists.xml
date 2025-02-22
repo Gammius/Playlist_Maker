@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    android:id="@+id/fragment_playlist"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <Button
         android:id="@+id/newPlaylistButton"
+        style="@style/Button_Update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/btn_new_playlist"
-        android:layout_marginTop="24dp"
-        android:textAllCaps="false"
         android:layout_gravity="center"
+        android:layout_marginTop="24dp"
         android:padding="8dp"
-        style="@style/Button_Update"/>
+        android:text="@string/btn_new_playlist"
+        android:textAllCaps="false" />
 
     <LinearLayout
         android:id="@+id/no_playlist"
-        android:layout_marginTop="46dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:layout_marginTop="46dp"
+        android:orientation="vertical">
 
         <ImageView
             style="@style/image_no_results"
@@ -30,10 +31,17 @@
 
         <TextView
             style="@style/text_history"
-            android:layout_marginTop="16dp"
-            android:layout_marginHorizontal="24dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="24dp"
+            android:layout_marginTop="16dp"
             android:text="@string/no_playlist" />
     </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_playlist"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="72dp"
+        android:layout_weight="1" />
 </LinearLayout>

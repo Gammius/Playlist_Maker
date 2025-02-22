@@ -1,6 +1,5 @@
 package com.example.playlist_maker.presentation.mediaLibrary.view_model
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlist_maker.domain.favoriteTrack.FavoriteTrackInteractor
@@ -23,7 +22,6 @@ class FavoritesViewModel(
     fun loadFavoriteTracks() {
         viewModelScope.launch {
             favoriteTrackInteractor.getTrackFavorite().collect { tracks ->
-                Log.d("FavoritesViewModel", "Loaded tracks: $tracks")
                 val newState = if (tracks.isEmpty()) {
                     FavoritesFragmentState(noMedia = true)
                 } else {

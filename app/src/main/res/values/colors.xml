@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
@@ -11,7 +11,14 @@
     <color name="trackTint">#E6E8EB</color>
     <color name="trackTintNight">#9FBBF3</color>
     <color name="bg_ml">#FFFFFF</color>
+    <color name="black_and_white">#1A1B22</color>
 
     <color name="nav_item_active">#3772E7</color>
     <color name="nav_item_inactive">#1A1B22</color>
+
+    <color name="border">#3772E7</color>
+    <color name="hint">#3772E7</color>
+    <color name="hint_text">#1A1B22</color>
+    <color name="mtrl_textinput_default_box_stroke_color" tools:override="true">#AEAFB4</color>
+    <color name="botoom_sheet_view">#E6E8EB</color>
 </resources>

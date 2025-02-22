@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.playlist_maker.domain.audioPlayer.AudioPlayerInteractor
 import com.example.playlist_maker.domain.audioPlayer.model.AudioPlayerEvent
 import com.example.playlist_maker.domain.favoriteTrack.FavoriteTrackInteractor
+import com.example.playlist_maker.domain.playlist.PlaylistInteractor
 import com.example.playlist_maker.domain.search.model.Track
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +16,8 @@ import kotlinx.coroutines.launch
 
 class AudioPlayerViewModel(
     private val audioPlayerInteractor: AudioPlayerInteractor,
-    private val favoriteTrackInteractor: FavoriteTrackInteractor
+    private val favoriteTrackInteractor: FavoriteTrackInteractor,
+    private val playlistInteractor: PlaylistInteractor
 ) : ViewModel() {
 
     companion object {
@@ -31,8 +33,39 @@ class AudioPlayerViewModel(
     private val _isFavorite = MutableLiveData<Boolean>()
     val isFavorite: LiveData<Boolean> get() = _isFavorite
 
+    private val _playlist = MutableStateFlow(AudioPlayerState())
+    val playlist: StateFlow<AudioPlayerState> get() = _playlist
+
     init {
         _audioPlayerState.value = AudioPlayerState()
+        loadPlaylist()
+    }
+
+    fun updateTrackPlaylist(playlistId: Long, trackIds: List<Long>, trackCount: Int, track: Track) {
+        if (!isTrackInPlaylist(track.trackId, trackIds)) {
+            viewModelScope.launch {
+
+                val newTrackIds = trackIds + track.trackId
+                val newTrackCount = trackCount + 1
+
+                playlistInteractor.updatePlayList(playlistId, newTrackIds, newTrackCount)
+                loadPlaylist()
+                playlistInteractor.addTrackPlaylist(track)
+            }
+        }
+    }
+
+    private fun isTrackInPlaylist(trackId: Long, trackIds: List<Long>): Boolean {
+        return trackIds.contains(trackId)
+    }
+
+    fun loadPlaylist() {
+        viewModelScope.launch {
+            playlistInteractor.getAllPlaylist().collect { playlists ->
+                val newState = AudioPlayerState(playlists = playlists)
+                _playlist.value = newState
+            }
+        }
     }
 
     fun onFavoriteClicked(track: Track) {
@@ -160,3 +193,4 @@ class AudioPlayerViewModel(
         }
     }
 }
+

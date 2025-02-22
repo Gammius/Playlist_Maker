@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import com.example.playlist_maker.R
 import com.example.playlist_maker.databinding.FragmentMediaLibraryBinding
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.MediaLibraryViewModel
+import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -45,6 +46,17 @@ class MediaLibraryFragment : Fragment(R.layout.fragment_media_library) {
             binding.viewPagerML.setCurrentItem(mediaLibrary.selectedTabIndex, false)
             binding.tabLayoutML.getTabAt(mediaLibrary.selectedTabIndex)?.select()
         }
+
+        binding.tabLayoutML.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                tab?.let {
+                    mediaLibraryViewModel.selectedTabIndex(it.position)
+                }
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
     }
 
     override fun onDestroy() {
