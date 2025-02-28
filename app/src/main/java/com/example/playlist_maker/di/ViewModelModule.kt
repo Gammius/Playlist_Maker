@@ -4,7 +4,9 @@ import com.example.playlist_maker.presentation.audioPlayer.view_model.AudioPlaye
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.FavoritesViewModel
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.MediaLibraryViewModel
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.NewPlaylistViewModel
+import com.example.playlist_maker.presentation.mediaLibrary.view_model.PlaylistEditViewModel
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.PlaylistViewModel
+import com.example.playlist_maker.presentation.mediaLibrary.view_model.PlaylistsViewModel
 import com.example.playlist_maker.presentation.search.view_model.SearchViewModel
 import com.example.practicum.playlist.ui.settings.view_model.SettingsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -17,6 +19,8 @@ val viewModelModule = module {
     viewModel { SettingsViewModel(get(), get()) }
     viewModel { MediaLibraryViewModel() }
     viewModel { FavoritesViewModel(get()) }
-    viewModel { PlaylistViewModel(get()) }
+    viewModel { PlaylistsViewModel(get()) }
     viewModel { NewPlaylistViewModel(get()) }
+    viewModel {PlaylistViewModel(get())}
+    viewModel {PlaylistEditViewModel(get())}
 }

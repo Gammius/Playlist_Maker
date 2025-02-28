@@ -55,6 +55,42 @@ class PlaylistRepositoryImpl(
         trackPlaylistDao.insertTrackPlaylist(trackDb)
     }
 
+    override suspend fun getPlaylistById(playlistId: Long): Flow<Playlist?> = flow {
+        val playlist = playlistDao.getPlaylistById(playlistId)
+        emit(playlist?.let { playlistDbConverter.map(it) })
+    }
+
+    override suspend fun getAllTracks(): Flow<List<Track>> = flow {
+        val tracks = trackPlaylistDao.getAllTracks()
+        emit(convertFromTrackPlaylist(tracks))
+    }
+
+    override suspend fun deleteTrackPlaylist(track: Track) {
+        val trackDb = convertToTrackPlaylist(track)
+        trackPlaylistDao.deleteTrackPlaylist(trackDb)
+    }
+
+    override suspend fun deletePlaylistById(playlistId: Long) {
+        playlistDao.deletePlaylistById(playlistId)
+    }
+
+    override suspend fun updateEditPlaylist(
+        playlistId: Long,
+        namePlaylist: String,
+        descriptionPlaylist: String,
+        uriImageCoverPlaylist: Uri?
+    ) {
+        val savedImageUri = saveImageToAppStorage(uriImageCoverPlaylist)
+        val playlistDb = playlistDao.getPlaylistById(playlistId)
+        if (playlistDb != null) {
+            playlistDb.namePlaylist = namePlaylist
+            playlistDb.descriptionPlaylist = descriptionPlaylist
+            playlistDb.uriImageCoverPlaylist = savedImageUri?.toString()
+
+            playlistDao.updatePlaylist(playlistDb)
+        }
+    }
+
     private fun convertToPlaylistEntity(playlist: Playlist): PlaylistEntity {
         return playlistDbConverter.map(playlist)
     }
@@ -81,7 +117,7 @@ class PlaylistRepositoryImpl(
             }
             val fileName = "cover_${System.currentTimeMillis()}.jpg"
             val file = File(filePath, fileName)
-            val inputStream = context.contentResolver.openInputStream(uri!!)
+            val inputStream = context.contentResolver.openInputStream(uri)
             val outputStream = FileOutputStream(file)
             inputStream?.use { input ->
                 outputStream.use { output ->

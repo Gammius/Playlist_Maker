@@ -23,7 +23,11 @@ class MainActivity : AppCompatActivity() {
         val navController = navHostFragment.navController
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
-            if (destination.id == R.id.newPlaylistFragment) {
+            if (
+                destination.id == R.id.newPlaylistFragment ||
+                destination.id == R.id.playlistFragment ||
+                destination.id == R.id.playlistEditFragment
+            ) {
                 binding.bottomNavigationView.visibility = View.GONE
             } else {
                 binding.bottomNavigationView.visibility = View.VISIBLE

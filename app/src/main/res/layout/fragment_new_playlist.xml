@@ -43,7 +43,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_search_header"
+        android:id="@+id/text_new_playlist"
         style="@style/Header_Text_Style"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionDone"
-            android:inputType="textMultiLine"
+            android:singleLine="true"
             android:textCursorDrawable="@drawable/custom_cursor" />
     </com.google.android.material.textfield.TextInputLayout>
 
