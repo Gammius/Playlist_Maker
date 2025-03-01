@@ -56,4 +56,8 @@ class PlaylistInteractorImpl(
             uriImageCoverPlaylist
         )
     }
+
+    override suspend fun deleteTrackById(trackId: Long) {
+        repository.deleteTrackById(trackId)
+    }
 }

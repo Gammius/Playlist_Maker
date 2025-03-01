@@ -15,6 +15,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.example.playlist_maker.R
+import com.example.playlist_maker.Utils.setDialogTextColors
 import com.example.playlist_maker.databinding.FragmentNewPlaylistBinding
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.NewPlaylistViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -98,11 +99,14 @@ open class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
     }
 
     private fun showDiscardChangesDialog() {
-        AlertDialog.Builder(requireContext()).setTitle("Завершить создание плейлиста?")
+        val dialog = AlertDialog.Builder(requireContext())
+            .setTitle("Завершить создание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны.")
             .setPositiveButton("Завершить") { _, _ ->
                 requireActivity().supportFragmentManager.popBackStack()
-            }.setNeutralButton("Отмена", null).show()
+            }.setNegativeButton("Отмена", null).create()
+        dialog.show()
+        setDialogTextColors(dialog, requireContext())
     }
 
     override fun onDestroyView() {

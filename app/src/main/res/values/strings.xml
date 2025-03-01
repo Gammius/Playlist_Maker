@@ -43,4 +43,6 @@
     <string name="edit_playlist">Редактировать информацию</string>
     <string name="delete_playlist">Удалить плейлист</string>
     <string name="no_track_playlist">В этом плейлисте нет треков</string>
+    <string name="save_button_text">Сохранить</string>
+    <string name="header_title_edit">Редактировать</string>
 </resources>

@@ -57,7 +57,7 @@ class PlaylistEditFragment : NewPlaylistFragment() {
         binding.arrowBack.setOnClickListener {
             requireActivity().supportFragmentManager.popBackStack()
         }
-        binding.textNewPlaylist.text = "Редактировать"
+        binding.textNewPlaylist.text = getString(R.string.header_title_edit)
 
         val playlistId = arguments?.getLong("playlistId", 0)
         val playlistName = arguments?.getString("playlistName")
@@ -106,7 +106,7 @@ class PlaylistEditFragment : NewPlaylistFragment() {
             playlistEditViewModel.onPlaylistDescriptionChanged(descriptionPlaylist)
         }
 
-        binding.createButton.text = "Сохранить"
+        binding.createButton.text = getString(R.string.save_button_text)
         binding.createButton.setOnClickListener {
             val namePlaylist = binding.editTextNamePlaylistLayoutText.text.toString()
             val descriptionPlaylist = binding.editTextDescriptionPlaylistText.text.toString()

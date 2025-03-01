@@ -63,6 +63,18 @@ class PlaylistViewModel(
 
     fun deletePlaylist(playlistId: Long) {
         viewModelScope.launch {
+            playlistInteractor.getPlaylistById(playlistId).collect { playlist ->
+                playlist?.trackIds?.forEach { trackId ->
+                    var isTrackInOtherPlaylists = false
+                    playlistInteractor.getAllPlaylist().collect { playlists ->
+                        isTrackInOtherPlaylists =
+                            playlists.any { it.trackIds.contains(trackId) && it.id != playlistId }
+                    }
+                    if (!isTrackInOtherPlaylists) {
+                        playlistInteractor.deleteTrackById(trackId)
+                    }
+                }
+            }
             playlistInteractor.deletePlaylistById(playlistId)
         }
     }

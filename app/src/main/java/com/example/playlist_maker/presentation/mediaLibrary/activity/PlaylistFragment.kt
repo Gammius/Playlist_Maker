@@ -22,6 +22,7 @@ import com.example.playlist_maker.R
 import com.example.playlist_maker.Utils.dpToPx
 import com.example.playlist_maker.Utils.formatMinutes
 import com.example.playlist_maker.Utils.getTrackCountText
+import com.example.playlist_maker.Utils.setDialogTextColors
 import com.example.playlist_maker.databinding.FragmentPlaylistBinding
 import com.example.playlist_maker.domain.playlist.model.Playlist
 import com.example.playlist_maker.domain.search.model.Track
@@ -146,6 +147,7 @@ class PlaylistFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
+                        overlay.visibility = View.VISIBLE
                     }
 
                     BottomSheetBehavior.STATE_COLLAPSED -> {
@@ -165,6 +167,9 @@ class PlaylistFragment : Fragment() {
             override fun onSlide(bottomSheet: View, slideOffset: Float) {}
         })
 
+        overlay.setOnClickListener {
+        }
+
         binding.menuButton.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         }
@@ -180,7 +185,7 @@ class PlaylistFragment : Fragment() {
 
         binding.deletePlaylist.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            AlertDialog.Builder(requireContext())
+            val dialog = AlertDialog.Builder(requireContext())
                 .setTitle("Удалить плейлист")
                 .setMessage("Хотите удалить плейлист?")
                 .setPositiveButton("Да") { _, _ ->
@@ -188,7 +193,9 @@ class PlaylistFragment : Fragment() {
                     requireActivity().supportFragmentManager.popBackStack()
                 }
                 .setNegativeButton("Нет", null)
-                .show()
+                .create()
+            dialog.show()
+            setDialogTextColors(dialog, requireContext())
         }
 
         binding.editPlaylist.setOnClickListener {
@@ -232,14 +239,16 @@ class PlaylistFragment : Fragment() {
 
     private fun showDeleteDialog(playlistId: Long, track: Track) {
 
-        AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext())
             .setTitle("Удалить трек")
             .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
             .setPositiveButton("Удалить") { _, _ ->
                 playlistViewModel.deleteTrackPlaylist(playlistId, track)
             }
             .setNegativeButton("Отмена", null)
-            .show()
+            .create()
+        dialog.show()
+        setDialogTextColors(dialog, requireContext())
     }
 
     private fun handleShareButtonClick() {

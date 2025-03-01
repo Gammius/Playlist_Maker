@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Environment
+import android.util.Log
 import com.example.playlist_maker.data.converters.PlaylistDbConvertor
 import com.example.playlist_maker.data.converters.TrackPlaylistDbConvertor
 import com.example.playlist_maker.data.db.dao.PlaylistDao
@@ -80,15 +81,25 @@ class PlaylistRepositoryImpl(
         descriptionPlaylist: String,
         uriImageCoverPlaylist: Uri?
     ) {
-        val savedImageUri = saveImageToAppStorage(uriImageCoverPlaylist)
-        val playlistDb = playlistDao.getPlaylistById(playlistId)
-        if (playlistDb != null) {
-            playlistDb.namePlaylist = namePlaylist
-            playlistDb.descriptionPlaylist = descriptionPlaylist
-            playlistDb.uriImageCoverPlaylist = savedImageUri?.toString()
-
-            playlistDao.updatePlaylist(playlistDb)
+        val savedImageUri: Uri? = if (uriImageCoverPlaylist.toString() != "null"){
+            saveImageToAppStorage(uriImageCoverPlaylist)
+        } else {
+            null
         }
+
+            val playlistDb = playlistDao.getPlaylistById(playlistId)
+            if (playlistDb != null) {
+                playlistDb.namePlaylist = namePlaylist
+                playlistDb.descriptionPlaylist = descriptionPlaylist
+                playlistDb.uriImageCoverPlaylist = savedImageUri?.toString()
+                playlistDao.updatePlaylist(playlistDb)
+                Log.d("SaveData3", "Saving playlist with image URI: $playlistDb")
+            }
+    }
+
+
+    override suspend fun deleteTrackById(trackId: Long) {
+        trackPlaylistDao.deleteTrackById(trackId)
     }
 
     private fun convertToPlaylistEntity(playlist: Playlist): PlaylistEntity {
@@ -109,25 +120,28 @@ class PlaylistRepositoryImpl(
     }
 
     private fun saveImageToAppStorage(uri: Uri?): Uri? {
-        if (uri != null) {
+        if (uri.toString() != "null") {
             val filePath =
                 File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_images")
+
             if (!filePath.exists()) {
                 filePath.mkdirs()
             }
+
             val fileName = "cover_${System.currentTimeMillis()}.jpg"
             val file = File(filePath, fileName)
-            val inputStream = context.contentResolver.openInputStream(uri)
+            val inputStream = uri?.let { context.contentResolver.openInputStream(it) }
             val outputStream = FileOutputStream(file)
+
             inputStream?.use { input ->
                 outputStream.use { output ->
                     BitmapFactory.decodeStream(input)
                         .compress(Bitmap.CompressFormat.JPEG, 80, output)
                 }
             }
-            return Uri.fromFile(file)
+            return  Uri.fromFile(file)
         } else {
-            return null
+            return  null
         }
     }
 }

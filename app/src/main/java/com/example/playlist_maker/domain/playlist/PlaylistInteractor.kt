@@ -20,4 +20,5 @@ interface PlaylistInteractor {
         descriptionPlaylist: String,
         uriImageCoverPlaylist: Uri?
     )
+    suspend fun deleteTrackById(trackId: Long)
 }
