@@ -17,7 +17,6 @@ fun setDialogTextColors(dialog: AlertDialog, context: Context) {
     val positiveButton = dialog.getButton(AlertDialog.BUTTON_POSITIVE)
     positiveButton.setTextColor(ContextCompat.getColor(context, R.color.custom_button_color))
 
-
     val negativeButton = dialog.getButton(AlertDialog.BUTTON_NEGATIVE)
     negativeButton.setTextColor(ContextCompat.getColor(context, R.color.custom_button_color))
 }

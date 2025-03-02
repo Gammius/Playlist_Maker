@@ -1,5 +1,7 @@
 package com.example.playlist_maker.presentation.mediaLibrary.view_model
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.playlist_maker.domain.playlist.PlaylistInteractor
@@ -7,6 +9,7 @@ import com.example.playlist_maker.domain.search.model.Track
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.model.PlaylistFragmentState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -17,6 +20,9 @@ class PlaylistViewModel(
 
     private val _playlist = MutableStateFlow(PlaylistFragmentState())
     val playlist: StateFlow<PlaylistFragmentState> get() = _playlist
+
+    private val _updateSuccess = MutableLiveData<Boolean>()
+    val updateSuccess: LiveData<Boolean> get() = _updateSuccess
 
 
     fun loadPlaylistAndTracks(playlistId: Long) {
@@ -63,19 +69,22 @@ class PlaylistViewModel(
 
     fun deletePlaylist(playlistId: Long) {
         viewModelScope.launch {
+            val playlists = playlistInteractor.getAllPlaylist().first()
             playlistInteractor.getPlaylistById(playlistId).collect { playlist ->
-                playlist?.trackIds?.forEach { trackId ->
-                    var isTrackInOtherPlaylists = false
-                    playlistInteractor.getAllPlaylist().collect { playlists ->
-                        isTrackInOtherPlaylists =
-                            playlists.any { it.trackIds.contains(trackId) && it.id != playlistId }
+                playlist?.let {
+                    it.trackIds.forEach { trackId ->
+                        val isTrackInOtherPlaylists = playlists.any { p ->
+                            p.trackIds.contains(trackId) && p.id != playlistId
+                        }
+
+                        if (!isTrackInOtherPlaylists) {
+                            playlistInteractor.deleteTrackById(trackId)
+                        }
                     }
-                    if (!isTrackInOtherPlaylists) {
-                        playlistInteractor.deleteTrackById(trackId)
-                    }
+                    playlistInteractor.deletePlaylistById(playlistId)
                 }
             }
-            playlistInteractor.deletePlaylistById(playlistId)
+            _updateSuccess.postValue(true)
         }
     }
 }

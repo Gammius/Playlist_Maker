@@ -23,11 +23,7 @@ class PlaylistDbConvertor {
 
     fun map(playlistEntity: PlaylistEntity): Playlist {
         val trackIds = Gson().fromJson(playlistEntity.trackIds, Array<Long>::class.java).toList()
-        val imageUri = if (playlistEntity.uriImageCoverPlaylist == "null") {
-            null
-        } else {
-            Uri.parse(playlistEntity.uriImageCoverPlaylist)
-        }
+        val imageUri = playlistEntity.uriImageCoverPlaylist?.let { Uri.parse(it) }
 
         return Playlist(
             id = playlistEntity.id,

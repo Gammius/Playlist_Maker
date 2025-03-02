@@ -99,7 +99,7 @@ open class NewPlaylistFragment : Fragment(R.layout.fragment_new_playlist) {
     }
 
     private fun showDiscardChangesDialog() {
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
             .setTitle("Завершить создание плейлиста?")
             .setMessage("Все несохраненные данные будут потеряны.")
             .setPositiveButton("Завершить") { _, _ ->

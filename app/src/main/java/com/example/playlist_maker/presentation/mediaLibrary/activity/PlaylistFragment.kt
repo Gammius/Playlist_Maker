@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -185,12 +186,16 @@ class PlaylistFragment : Fragment() {
 
         binding.deletePlaylist.setOnClickListener {
             bottomSheetBehavior.state = BottomSheetBehavior.STATE_HIDDEN
-            val dialog = AlertDialog.Builder(requireContext())
+            val dialog = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
                 .setTitle("Удалить плейлист")
                 .setMessage("Хотите удалить плейлист?")
                 .setPositiveButton("Да") { _, _ ->
                     playlistViewModel.deletePlaylist(playlistId)
-                    requireActivity().supportFragmentManager.popBackStack()
+                    playlistViewModel.updateSuccess.observe(viewLifecycleOwner, Observer { isUpdated ->
+                        if (isUpdated) {
+                            requireActivity().supportFragmentManager.popBackStack()
+                        }
+                    })
                 }
                 .setNegativeButton("Нет", null)
                 .create()
@@ -239,7 +244,7 @@ class PlaylistFragment : Fragment() {
 
     private fun showDeleteDialog(playlistId: Long, track: Track) {
 
-        val dialog = AlertDialog.Builder(requireContext())
+        val dialog = AlertDialog.Builder(requireContext(), R.style.CustomAlertDialog)
             .setTitle("Удалить трек")
             .setMessage("Вы уверены, что хотите удалить трек из плейлиста?")
             .setPositiveButton("Удалить") { _, _ ->
