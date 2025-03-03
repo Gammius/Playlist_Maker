@@ -15,17 +15,17 @@ import com.example.playlist_maker.R
 import com.example.playlist_maker.Utils.GridSpacingItemDecoration
 import com.example.playlist_maker.databinding.FragmentPlaylistsBinding
 import com.example.playlist_maker.presentation.mediaLibrary.view_model.MediaLibraryViewModel
-import com.example.playlist_maker.presentation.mediaLibrary.view_model.PlaylistViewModel
+import com.example.playlist_maker.presentation.mediaLibrary.view_model.PlaylistsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class PlaylistsFragment : Fragment() {
 
-    private val playlistsViewModel: PlaylistViewModel by viewModel()
+    private val playlistsViewModel: PlaylistsViewModel by viewModel()
     private val mediaLibraryViewModel: MediaLibraryViewModel by viewModel()
     private var _binding: FragmentPlaylistsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var playlistAdapter: PlaylistAdapter
+    private lateinit var playlistAdapter: PlaylistsAdapter
 
     companion object {
         fun newInstance(): PlaylistsFragment {
@@ -53,25 +53,30 @@ class PlaylistsFragment : Fragment() {
         val leftRightSpacing = dpToPx(16)
         val topSpacing = dpToPx(16)
 
-        binding.recyclerViewPlaylist.layoutManager = GridLayoutManager(requireContext(), 2)
-        binding.recyclerViewPlaylist.addItemDecoration(
+        binding.recyclerViewPlaylists.layoutManager = GridLayoutManager(requireContext(), 2)
+        binding.recyclerViewPlaylists.addItemDecoration(
             GridSpacingItemDecoration(2, spacing, leftRightSpacing, topSpacing)
         )
 
-        playlistAdapter = PlaylistAdapter(emptyList())
+        playlistAdapter = PlaylistsAdapter(emptyList()) { playlistId ->
+            val bundle = Bundle().apply {
+                putLong("playlistId", playlistId)
+            }
+            findNavController().navigate(R.id.action_playlistsFragment_to_playlistFragment, bundle)
+        }
 
-        binding.recyclerViewPlaylist.adapter = playlistAdapter
+        binding.recyclerViewPlaylists.adapter = playlistAdapter
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 playlistsViewModel.playlist.collect { playlist ->
-                    binding.noPlaylist.isVisible = playlist.noPlaylist ?: true
+                    binding.noPlaylist.isVisible = playlist.noPlaylist
                     playlistAdapter.updatePlaylist(playlist.playlists)
                 }
             }
         }
         binding.newPlaylistButton.setOnClickListener {
-            findNavController().navigate(R.id.action_playlistFragment_to_newPlaylistFragment)
+            findNavController().navigate(R.id.action_playlistsFragment_to_newPlaylistFragment)
             mediaLibraryViewModel.selectedTabIndex(1)
         }
     }

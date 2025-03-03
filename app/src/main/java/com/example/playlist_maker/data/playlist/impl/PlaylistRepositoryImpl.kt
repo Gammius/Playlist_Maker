@@ -43,16 +43,58 @@ class PlaylistRepositoryImpl(
     override suspend fun updatePlayList(playlistId: Long, trackIds: List<Long>, trackCount: Int) {
         val playlistDb = playlistDao.getPlaylistById(playlistId)
         if (playlistDb != null) {
-            playlistDb.trackIds = Gson().toJson(trackIds)
-            playlistDb.trackCount = trackCount
-
-            playlistDao.updatePlaylist(playlistDb)
+            val updatedPlaylist = playlistDb.copy(
+                trackIds = Gson().toJson(trackIds),
+                trackCount = trackCount
+            )
+            playlistDao.updatePlaylist(updatedPlaylist)
         }
     }
 
     override suspend fun addTrackPlaylist(track: Track) {
         val trackDb = convertToTrackPlaylist(track)
         trackPlaylistDao.insertTrackPlaylist(trackDb)
+    }
+
+    override suspend fun getPlaylistById(playlistId: Long): Flow<Playlist?> = flow {
+        val playlist = playlistDao.getPlaylistById(playlistId)
+        emit(playlist?.let { playlistDbConverter.map(it) })
+    }
+
+    override suspend fun getAllTracks(): Flow<List<Track>> = flow {
+        val tracks = trackPlaylistDao.getAllTracks()
+        emit(convertFromTrackPlaylist(tracks))
+    }
+
+    override suspend fun deleteTrackPlaylist(track: Track) {
+        val trackDb = convertToTrackPlaylist(track)
+        trackPlaylistDao.deleteTrackPlaylist(trackDb)
+    }
+
+    override suspend fun deletePlaylistById(playlistId: Long) {
+        playlistDao.deletePlaylistById(playlistId)
+    }
+
+    override suspend fun updateEditPlaylist(
+        playlistId: Long,
+        namePlaylist: String,
+        descriptionPlaylist: String,
+        uriImageCoverPlaylist: Uri?
+    ) {
+        val savedImageUri = saveImageToAppStorage(uriImageCoverPlaylist)
+        val playlistDb = playlistDao.getPlaylistById(playlistId)
+        if (playlistDb != null) {
+            val updatedPlaylist = playlistDb.copy(
+                namePlaylist = namePlaylist,
+                descriptionPlaylist = descriptionPlaylist,
+                uriImageCoverPlaylist = savedImageUri?.toString()
+            )
+            playlistDao.updatePlaylist(updatedPlaylist)
+        }
+    }
+
+    override suspend fun deleteTrackById(trackId: Long) {
+        trackPlaylistDao.deleteTrackById(trackId)
     }
 
     private fun convertToPlaylistEntity(playlist: Playlist): PlaylistEntity {
@@ -73,16 +115,19 @@ class PlaylistRepositoryImpl(
     }
 
     private fun saveImageToAppStorage(uri: Uri?): Uri? {
-        if (uri != null) {
+        if (uri != null && uri.toString() != "null") {
             val filePath =
                 File(context.getExternalFilesDir(Environment.DIRECTORY_PICTURES), "playlist_images")
+
             if (!filePath.exists()) {
                 filePath.mkdirs()
             }
+
             val fileName = "cover_${System.currentTimeMillis()}.jpg"
             val file = File(filePath, fileName)
-            val inputStream = context.contentResolver.openInputStream(uri!!)
+            val inputStream = uri.let { context.contentResolver.openInputStream(it) }
             val outputStream = FileOutputStream(file)
+
             inputStream?.use { input ->
                 outputStream.use { output ->
                     BitmapFactory.decodeStream(input)

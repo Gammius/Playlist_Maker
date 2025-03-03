@@ -14,7 +14,7 @@ import com.example.playlist_maker.Utils.dpToPx
 import com.example.playlist_maker.Utils.getTrackCountText
 import com.example.playlist_maker.domain.playlist.model.Playlist
 
-class PlaylistViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class PlaylistsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     private val namePlaylistView: TextView = itemView.findViewById(R.id.name_playlist)
     private val countTrackView: TextView = itemView.findViewById(R.id.count_track)
     private val imageCoverView: ImageView = itemView.findViewById(R.id.image_cover)

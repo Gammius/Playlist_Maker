@@ -219,11 +219,12 @@
         <item name="android:textColor">@color/black1</item>
     </style>
 
-    <style name="medium_500_16sp_white1">
+    <style name="Create_button" parent="Widget.MaterialComponents.Button.UnelevatedButton">
         <item name="android:fontFamily">@font/ys_display_medium</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textFontWeight">500</item>
         <item name="android:textColor">@color/white1</item>
+        <item name="android:backgroundTint">@drawable/button_state_selector</item>
     </style>
 
     <style name="TabLayout1" parent="Widget.Design.TabLayout">
@@ -244,6 +245,24 @@
         <item name="itemTextColor">@drawable/bottom_nav_item_color</item>
         <item name="itemIconTint">@drawable/bottom_nav_item_color</item>
         <item name="itemBackground">@color/bg_ml</item>
+    </style>
+
+    <style name="YS_Bold_24sp_700_black">
+        <item name="android:fontFamily">@font/ys_display_medium</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="itemTextColor">@color/black1</item>
+    </style>
+
+    <style name="YS_Regular_18sp_400_black">
+        <item name="android:fontFamily">@font/ys_display_regular</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textFontWeight">400</item>
+        <item name="itemTextColor">@color/black1</item>
+    </style>
+
+    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:background">@color/custom_dialog_background</item>
     </style>
 
 </resources>
